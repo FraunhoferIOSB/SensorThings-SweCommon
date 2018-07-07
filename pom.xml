@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.fraunhofer.iosb.ilt.FROST-Server</groupId>
+	<artifactId>SensorThings-SWE-Common</artifactId>
+	<packaging>jar</packaging>
+
+	<name>SensorThings-SWE-Common</name>
+	<version>0.1-SNAPSHOT</version>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License v3, or (at your option) any later version</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<comments>For more information see the LICENSE included with the sources.</comments>
+		</license>
+	</licenses>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<mainClass>de.fraunhofer.iosb.ilt.swe.common.example.ExampleGui</mainClass>
+		<configurable.version>0.9</configurable.version>
+		<logback.version>1.1.8</logback.version>
+	</properties>
+
+	<description>A set of classes to deal with the SWE-Common encoded parts of the SensorThings API.</description>
+	<inceptionYear>2018</inceptionYear>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/hylkevds/SensorThings-SweCommon/issues</url>
+	</issueManagement>
+
+	<organization>
+		<name>Fraunhofer IOSB</name>
+		<url>http://iosb.fraunhofer.de</url>
+	</organization>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>${mainClass}</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>bintray</id>
+			<url>https://jcenter.bintray.com</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>bintray-fraunhoferiosb-Maven</id>
+			<name>Fraunhofer Iosb Maven</name>
+			<url>https://dl.bintray.com/fraunhoferiosb/Maven</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.fraunhofer.iosb.ilt</groupId>
+			<artifactId>Configurable</artifactId>
+			<version>${configurable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+	</dependencies>
+</project>
