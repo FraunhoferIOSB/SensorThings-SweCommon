@@ -18,8 +18,9 @@
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_VALUE;
 
 /**
  *
@@ -28,20 +29,10 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 @ConfigurableClass(jsonName = "Boolean")
 public class SweBoolean extends AbstractSimpleComponent {
 
+    @ConfigurableField(editor = EditorBoolean.class, optional = true,
+            profilesGui = MODE_VALUE,
+            label = "Value", description = "The value of this Boolean Component.")
+    @EditorBoolean.EdOptsBool(dflt = false)
     private Boolean value;
-
-    private EditorBoolean editorValue;
-
-    @Override
-    public EditorMap<?> getConfigEditor(Void context, Void edtCtx) {
-        EditorMap<?> configEditor = super.getConfigEditor(context, edtCtx);
-
-        if (editorValue == null) {
-            editorValue = new EditorBoolean(value == null ? false : value, "Value", "The value of this component.");
-            configEditor.addOption("value", editorValue, true);
-        }
-
-        return configEditor;
-    }
 
 }

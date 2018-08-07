@@ -25,4 +25,10 @@ import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
  */
 public abstract class AbstractSWE extends AbstractConfigurable<Void, Void> {
 
+    public static final String MODE_SIMPLE = "simple";
+    public static final String MODE_EXPERT = "expert";
+    public static final String MODE_VALUE = "value";
+    public static final String MODE_SIMPLE_EXPERT = MODE_SIMPLE + "," + MODE_EXPERT;
+    public static final String MODE_SIMPLE_EXPERT_VALUE = MODE_SIMPLE + "," + MODE_EXPERT + "," + MODE_VALUE;
+
 }

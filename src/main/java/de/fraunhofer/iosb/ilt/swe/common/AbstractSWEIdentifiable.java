@@ -17,31 +17,34 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common;
 
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 
 /**
  *
  * @author Hylke van der Schaaf
  */
+@ConfigurableClass(profilesEdit = MODE_SIMPLE_EXPERT)
 public abstract class AbstractSWEIdentifiable extends AbstractSWE {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Identifier",
-            description = "A unique identifier.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_EXPERT,
+            label = "Identifier", description = "A unique identifier.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String identifier;
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Label",
-            description = "A short descriptive name.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
+            label = "Label", description = "A short descriptive name.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String label;
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Description",
-            description = "A longer description.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_EXPERT,
+            label = "Description", description = "A longer description.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String description;
 
     public String getIdentifier() {

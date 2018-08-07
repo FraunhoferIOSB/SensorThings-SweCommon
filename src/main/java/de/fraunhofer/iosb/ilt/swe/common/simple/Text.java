@@ -31,14 +31,14 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 public class Text extends AbstractSimpleComponent {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Value",
-            description = "The value of this field.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_VALUE,
+            label = "Value", description = "The value of this field.")
+    @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
-            label = "Constraint",
-            description = "The constraints put on the value of this component.")
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Constraint", description = "The constraints put on the value of this component.")
     @EditorClass.EdOptsClass(clazz = AllowedTokens.class)
     private AllowedTokens constraint;
 

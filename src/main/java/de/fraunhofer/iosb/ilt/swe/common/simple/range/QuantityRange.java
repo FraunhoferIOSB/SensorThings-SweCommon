@@ -15,36 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.fraunhofer.iosb.ilt.swe.common.simple;
+package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorDouble;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
+import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(jsonName = "Quantity")
-public class Quantity extends AbstractSimpleComponent {
-
-    @ConfigurableField(editor = EditorDouble.class, optional = true,
-            profilesGui = MODE_VALUE,
-            label = "Value", description = "a real value that is within one of "
-            + "the constraint intervals or exactly one of the enumerated values,"
-            + " and most importantly is expressed in the unit specified.")
-    @EditorDouble.EdOptsDouble(dflt = 0)
-    private BigDecimal value;
-
-    @ConfigurableField(editor = EditorClass.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Constraint", description = "A limited list of possible values.")
-    @EditorClass.EdOptsClass(clazz = AllowedValues.class)
-    private AllowedValues constraint;
+@ConfigurableClass(jsonName = "QuantityRange")
+public class QuantityRange extends AbstractSimpleComponent {
 
     @ConfigurableField(editor = EditorString.class, optional = false,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -52,16 +42,19 @@ public class Quantity extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
 
-    public BigDecimal getValue() {
-        return value;
-    }
+    @ConfigurableField(editor = EditorList.class, optional = true,
+            profilesGui = MODE_VALUE,
+            label = "Value", description = "The starting end ending values of this CategoryRange.")
+    @EditorList.EdOptsList(editor = EditorDouble.class,
+            profilesEdit = MODE_SIMPLE_EXPERT,
+            minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
+    @EditorDouble.EdOptsDouble(dflt = 0)
+    private List<BigDecimal> value;
 
-    public String getUom() {
-        return uom;
-    }
-
-    public AllowedValues getConstraint() {
-        return constraint;
-    }
+    @ConfigurableField(editor = EditorClass.class, optional = true,
+            profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
+            label = "Constraint", description = "A limited list of possible values.")
+    @EditorClass.EdOptsClass(clazz = AllowedValues.class)
+    private AllowedValues constraint;
 
 }

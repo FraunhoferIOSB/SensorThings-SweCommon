@@ -15,20 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.fraunhofer.iosb.ilt.swe.common.simple;
+package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTimes;
+import de.fraunhofer.iosb.ilt.swe.common.simple.*;
+import java.util.List;
 
 /**
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(jsonName = "Time")
-public class Time extends AbstractSimpleComponent {
+@ConfigurableClass(jsonName = "TimeRange")
+public class TimeRange extends AbstractSimpleComponent {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
@@ -68,11 +71,13 @@ public class Time extends AbstractSimpleComponent {
     @EditorClass.EdOptsClass(clazz = AllowedTimes.class)
     private AllowedTimes constraint;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
+    @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
-            label = "Value",
-            description = "The “value” attribute (or the corresponding value in out-of-band data) is of type\n"
-            + "“TimePosition” and must match the constraint.")
-    @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
-    private String value;
+            label = "Value", description = "The starting end ending values of this TimeRange.")
+    @EditorList.EdOptsList(editor = EditorString.class,
+            profilesEdit = MODE_SIMPLE_EXPERT,
+            minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    private List<String> value;
+
 }

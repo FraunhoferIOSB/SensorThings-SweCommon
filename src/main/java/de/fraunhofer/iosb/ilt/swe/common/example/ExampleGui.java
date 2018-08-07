@@ -1,123 +1,54 @@
+/*
+ * Copyright (C) 2018 Fraunhofer IOSB.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.fraunhofer.iosb.ilt.swe.common.example;
-
-import java.awt.GridBagConstraints;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import de.fraunhofer.iosb.ilt.configurable.ConfigEditor;
-import de.fraunhofer.iosb.ilt.configurable.Reflection;
-
-import java.awt.event.ActionEvent;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-
+import de.fraunhofer.iosb.ilt.swe.common.AbstractSWE;
+import java.awt.BorderLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author scf
+ * @author Hylke van der Schaaf
  */
 public class ExampleGui extends javax.swing.JFrame {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleGui.class);
-    private JTextArea jsonTextArea;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButtonToJson;
-    private javax.swing.JButton jButtonFromJson;
-    private javax.swing.JPanel panelEditor;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExampleGui.class.getName());
     private ConfigEditor editor;
+    private ConfigEditor editorValues;
 
     /**
-     * Creates new form ExampleGui
+     * Creates new form ExampleGuiSwing
      */
     public ExampleGui() {
-        createGui();
+        initComponents();
+        addEditorToGui();
     }
 
-    private void createGui() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.BorderLayout());
-
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        JSplitPane splitPane1 = new javax.swing.JSplitPane();
-        JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        jsonTextArea = new javax.swing.JTextArea();
-
-        splitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        splitPane1.setResizeWeight(0.5);
-        jScrollPane1.setViewportView(jsonTextArea);
-        splitPane1.setBottomComponent(jScrollPane1);
-
-        JPanel panelTop = new JPanel();
-        panelTop.setLayout(new java.awt.GridBagLayout());
-
-        jButton1 = new javax.swing.JButton();
-        jButtonToJson = new javax.swing.JButton();
-        jButtonFromJson = new javax.swing.JButton();
-        panelEditor = new javax.swing.JPanel();
-
-        jButton1.setText("Do Something");
-        jButton1.addActionListener((ActionEvent e) -> {
-            useConfig();
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.01;
-        panelTop.add(jButton1, gridBagConstraints);
-
-        jButtonToJson.setText("To JSON");
-        jButtonToJson.addActionListener((ActionEvent e) -> {
-            printConfig();
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
-        gridBagConstraints.weightx = 0.01;
-        panelTop.add(jButtonToJson, gridBagConstraints);
-
-        jButtonFromJson.setText("Load JSON");
-        jButtonFromJson.addActionListener((ActionEvent e) -> {
-            loadConfig();
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.01;
-        panelTop.add(jButtonFromJson, gridBagConstraints);
-
-        panelEditor.setLayout(new java.awt.BorderLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.weightx = 0.01;
-        gridBagConstraints.weighty = 0.01;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        panelTop.add(panelEditor, gridBagConstraints);
-
-        addEditorToGui(panelEditor);
-
-        splitPane1.setTopComponent(panelTop);
-        getContentPane().add(splitPane1, java.awt.BorderLayout.CENTER);
-        pack();
-    }
-
-    private void addEditorToGui(JPanel parentPanel) {
+    private void addEditorToGui() {
         TaskingCapability taskingCapability = new TaskingCapability();
         editor = taskingCapability.getConfigEditor(null, null);
-        panelEditor.add(editor.getGuiFactorySwing().getComponent());
+        toggledMode();
+        panelEditor.add(editor.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
     }
 
     private void useConfig() {
@@ -143,20 +74,225 @@ public class ExampleGui extends javax.swing.JFrame {
         editor.setConfig(config);
     }
 
+    public void toggledMode() {
+        // Ensure all fields are read-in, so no user-text is lost.
+        editor.getConfig();
+        if (jCheckBoxProfile.isSelected()) {
+            editor.setProfile(AbstractSWE.MODE_SIMPLE);
+        } else {
+            editor.setProfile(AbstractSWE.MODE_EXPERT);
+        }
+    }
+
+    public void copyEditorToValuesEditor() {
+        JsonElement config = editor.getConfig();
+        TaskingCapability taskingCapability = new TaskingCapability();
+        editorValues = taskingCapability.getConfigEditor(null, null);
+        editorValues.setProfile(AbstractSWE.MODE_VALUE);
+        editorValues.setConfig(config);
+        panelValueEditor.removeAll();
+        panelValueEditor.add(editorValues.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jsonTextArea = new javax.swing.JTextArea();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButtonSave = new javax.swing.JButton();
+        jButtonLoad = new javax.swing.JButton();
+        jCheckBoxProfile = new javax.swing.JCheckBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        panelEditor = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        panelValueEditor = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SensorThings SWE-Common Example");
+
+        jSplitPane1.setDividerLocation(500);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setResizeWeight(0.5);
+
+        jsonTextArea.setColumns(20);
+        jsonTextArea.setRows(5);
+        jScrollPane1.setViewportView(jsonTextArea);
+
+        jSplitPane1.setBottomComponent(jScrollPane1);
+
+        jSplitPane2.setDividerLocation(450);
+        jSplitPane2.setResizeWeight(0.5);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jButton1.setText("...");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(jButton1, gridBagConstraints);
+
+        jButtonSave.setText("To JSON ↓");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(jButtonSave, gridBagConstraints);
+
+        jButtonLoad.setText("Load JSON ↑");
+        jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(jButtonLoad, gridBagConstraints);
+
+        jCheckBoxProfile.setSelected(true);
+        jCheckBoxProfile.setText("Simple Mode");
+        jCheckBoxProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxProfileActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jCheckBoxProfile, gridBagConstraints);
+
+        panelEditor.setLayout(new java.awt.BorderLayout());
+        jScrollPane2.setViewportView(panelEditor);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel1.add(jScrollPane2, gridBagConstraints);
+
+        jSplitPane2.setLeftComponent(jPanel1);
+
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        jButton2.setText("To JSON ↓");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jButton2, gridBagConstraints);
+
+        panelValueEditor.setLayout(new java.awt.BorderLayout());
+        jScrollPane3.setViewportView(panelValueEditor);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jScrollPane3, gridBagConstraints);
+
+        jButton3.setText("⤴");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jButton3, gridBagConstraints);
+
+        jSplitPane2.setRightComponent(jPanel2);
+
+        jSplitPane1.setTopComponent(jSplitPane2);
+
+        getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        printConfig();
+    }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
+        loadConfig();
+    }//GEN-LAST:event_jButtonLoadActionPerformed
+
+    private void jCheckBoxProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxProfileActionPerformed
+        toggledMode();
+    }//GEN-LAST:event_jCheckBoxProfileActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        copyEditorToValuesEditor();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            LOGGER.error("", ex);
+        }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            ExampleGui exampleGui = new ExampleGui();
-            exampleGui.setVisible(true);
-            exampleGui.setSize(400, 300);
+            ExampleGui gui = new ExampleGui();
+            gui.setSize(900, 700);
+            gui.setVisible(true);
         });
-        // Do classpath scanning in the background.
-        new Thread(() -> {
-            Reflection.getReflections();
-        }).start();
     }
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonLoad;
+    private javax.swing.JButton jButtonSave;
+    private javax.swing.JCheckBox jCheckBoxProfile;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JTextArea jsonTextArea;
+    private javax.swing.JPanel panelEditor;
+    private javax.swing.JPanel panelValueEditor;
+    // End of variables declaration//GEN-END:variables
 }

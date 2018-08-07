@@ -15,45 +15,48 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.fraunhofer.iosb.ilt.swe.common.constraint;
+package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
+import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(
-        jsonName = "AllowedTokens",
-        profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTokens extends AbstractConfigurable<Void, Void> {
+@ConfigurableClass(jsonName = "CategoryRange")
+public class CategoryRange extends AbstractSimpleComponent {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Value", description = "The values that the user can choose from.")
+            profilesGui = MODE_VALUE,
+            label = "Value", description = "The starting end ending values of this CategoryRange.")
     @EditorList.EdOptsList(editor = EditorString.class,
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+            profilesEdit = MODE_SIMPLE_EXPERT,
+            minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
+    @EditorString.EdOptsString
     private List<String> value;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Pattern", description = "The regex(?) pattern that the value must match.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
-    private String pattern;
+    @ConfigurableField(editor = EditorClass.class, optional = true,
+            profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
+            label = "Allowed Tokens", description = "A limited list of possible values.")
+    private AllowedTokens constraint;
+
+    //TODO
+    private Map<String, String> codeSpace;
+
+    public AllowedTokens getConstraint() {
+        return constraint;
+    }
 
     public List<String> getValue() {
         return value;
-    }
-
-    public String getPattern() {
-        return pattern;
     }
 
 }

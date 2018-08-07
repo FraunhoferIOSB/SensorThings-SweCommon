@@ -18,8 +18,12 @@
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
+import de.fraunhofer.iosb.ilt.swe.common.util.NillValue;
+import java.util.List;
 
 /**
  *
@@ -28,19 +32,50 @@ import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 public abstract class AbstractSimpleComponent extends AbstractDataComponent {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Axis ID",
-            description = "A string that uniquely identifies one of the reference frame’s axes along which the coordinate value is given.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_EXPERT,
+            label = "Axis ID", description = "A string that uniquely identifies one of the reference frame’s axes along which the coordinate value is given.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String axisID;
-    // TODO
-    private Object nilValues;
-    // TODO
-    private Object referenceFrame;
+
+    @ConfigurableField(editor = EditorString.class, optional = true,
+            profilesGui = MODE_EXPERT,
+            label = "Reference Frame", description = "The reference frame relative to which the coordinate value is given. Commonly an EPSG identifier.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    private String referenceFrame;
+
+    @ConfigurableField(editor = EditorList.class, optional = true,
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "NilValues", description = "a list (i.e. one or more) of NIL values.")
+    @EditorList.EdOptsList(editor = EditorClass.class,
+            profilesEdit = MODE_SIMPLE_EXPERT)
+    @EditorClass.EdOptsClass(clazz = NillValue.class)
+    private List<NillValue> nilValues;
+
     // TODO
     private Object quality;
 
+    public String getReferenceFrame() {
+        return referenceFrame;
+    }
+
+    public void setReferenceFrame(String referenceFrame) {
+        this.referenceFrame = referenceFrame;
+    }
+
     public String getAxisID() {
         return axisID;
+    }
+
+    public void setAxisID(String axisID) {
+        this.axisID = axisID;
+    }
+
+    public List<NillValue> getNilValues() {
+        return nilValues;
+    }
+
+    public void setNilValues(List<NillValue> nilValues) {
+        this.nilValues = nilValues;
     }
 
 }

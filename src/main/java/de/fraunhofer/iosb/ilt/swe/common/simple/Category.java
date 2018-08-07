@@ -18,9 +18,9 @@
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorSubclass;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import java.util.Map;
 
@@ -31,32 +31,27 @@ import java.util.Map;
 @ConfigurableClass(jsonName = "Category")
 public class Category extends AbstractSimpleComponent {
 
+    @ConfigurableField(editor = EditorString.class, optional = true,
+            profilesGui = MODE_VALUE,
+            label = "Value", description = "The value of this Category.")
+    @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
+
+    @ConfigurableField(editor = EditorClass.class, optional = true,
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Constraint", description = "A limited list of possible values.")
+    @EditorClass.EdOptsClass(clazz = AllowedTokens.class)
     private AllowedTokens constraint;
+
     //TODO
     private Map<String, String> codeSpace;
 
-    private EditorString editorValue;
-    private EditorSubclass<Void, Void, AllowedTokens> editorConstraint;
+    public AllowedTokens getConstraint() {
+        return constraint;
+    }
 
-    @Override
-    public EditorMap<?> getConfigEditor(Void context, Void edtCtx) {
-        EditorMap<?> configEditor = super.getConfigEditor(context, edtCtx);
-
-        if (editorValue == null) {
-            editorValue = new EditorString(value, 1, "Value", "The value of this component.");
-            configEditor.addOption("value", editorValue, true);
-
-            editorConstraint = new EditorSubclass<>(context, edtCtx, AllowedTokens.class, "Constraint", "The constraints put on the value of this component.");
-            editorConstraint.setNameField("type");
-            editorConstraint.setMerge(true);
-            configEditor.addOption("constraint", editorConstraint, true);
-            if (constraint != null) {
-                editorConstraint.setValue(constraint);
-            }
-        }
-
-        return configEditor;
+    public String getValue() {
+        return value;
     }
 
 }

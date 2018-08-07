@@ -31,10 +31,12 @@ import java.util.List;
 public class DataRecord extends AbstractDataComponent {
 
     @ConfigurableField(editor = EditorList.class,
+            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
             jsonField = "field",
             label = "Fields",
             description = "The fields in this DataRecord.")
-    @EditorList.EdOptsList(editor = EditorClass.class)
+    @EditorList.EdOptsList(editor = EditorClass.class,
+            profilesEdit = MODE_SIMPLE_EXPERT)
     @EditorClass.EdOptsClass(clazz = Field.class)
     private List<Field> fields;
 

@@ -18,27 +18,34 @@
 package de.fraunhofer.iosb.ilt.swe.common.complex;
 
 import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorSubclass;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT_VALUE;
 
 /**
  *
  * @author scf
  */
+@ConfigurableClass(profilesEdit = MODE_SIMPLE_EXPERT)
 public class Field extends AbstractConfigurable<Void, Void> {
 
     @ConfigurableField(editor = EditorString.class,
+            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
             label = "Name", description = "The unique name for this field.")
-    @EditorString.EdOptsString()
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String name;
 
     @ConfigurableField(editor = EditorSubclass.class,
             merge = true,
+            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
             label = "Field",
             description = "The actual field.")
     @EditorSubclass.EdOptsSubclass(iface = AbstractDataComponent.class,
+            profilesEdit = MODE_SIMPLE_EXPERT,
             merge = true,
             nameField = "type")
     private AbstractDataComponent field;

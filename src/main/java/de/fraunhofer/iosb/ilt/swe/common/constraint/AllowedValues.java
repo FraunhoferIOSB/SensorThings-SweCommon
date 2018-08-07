@@ -20,37 +20,45 @@ package de.fraunhofer.iosb.ilt.swe.common.constraint;
 import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorDouble;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorInt;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
-import de.fraunhofer.iosb.ilt.swe.common.util.RealPair;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import java.util.List;
 
 /**
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(jsonName = "AllowedValues")
+@ConfigurableClass(
+        jsonName = "AllowedValues",
+        profilesEdit = MODE_SIMPLE_EXPERT)
 public class AllowedValues extends AbstractConfigurable<Void, Void> {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
-            label = "Values",
-            description = "The values that the user can choose from.")
-    @EditorList.EdOptsList(editor = EditorDouble.class)
-    @EditorDouble.EdOptsDouble(min = Double.NEGATIVE_INFINITY, max = Double.POSITIVE_INFINITY, step = Double.MIN_VALUE, dflt = 0)
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Values", description = "The values that the user can choose from.")
+    @EditorList.EdOptsList(editor = EditorDouble.class,
+            profilesEdit = MODE_SIMPLE_EXPERT)
+    @EditorDouble.EdOptsDouble(dflt = 0)
     private List<Double> value;
 
     @ConfigurableField(editor = EditorList.class, optional = true,
-            label = "Intervals",
-            description = "The intervals that the value must fall in.")
-    @EditorList.EdOptsList(editor = EditorClass.class)
-    @EditorClass.EdOptsClass(clazz = RealPair.class)
-    private List<RealPair> interval;
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Intervals", description = "The intervals that the value must fall in.")
+    @EditorList.EdOptsList(editor = EditorList.class,
+            editorKey = "list-2",
+            profilesEdit = MODE_SIMPLE_EXPERT)
+    @EditorList.EdOptsList(editor = EditorDouble.class,
+            myKey = "list-2",
+            minCount = 2, maxCount = 2, horizontal = true, labelText = "Interval:",
+            profilesEdit = MODE_SIMPLE_EXPERT)
+    @EditorDouble.EdOptsDouble(dflt = 0, step = 1e-10)
+    private List<List<Double>> interval;
 
     @ConfigurableField(editor = EditorInt.class, optional = true,
-            label = "Figures",
-            description = "The number of significant figures.")
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Significant Figures", description = "The number of significant figures.")
     @EditorInt.EdOptsInt(min = 0, max = 100, step = 1, dflt = 1)
     private Integer significantFigures;
 
@@ -58,7 +66,7 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
         return value;
     }
 
-    public List<RealPair> getInterval() {
+    public List<List<Double>> getInterval() {
         return interval;
     }
 

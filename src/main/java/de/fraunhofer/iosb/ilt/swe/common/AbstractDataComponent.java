@@ -28,20 +28,20 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
-            label = "Definition",
-            description = "A scoped namethat maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
-    @EditorString.EdOptsString()
+            profilesGui = MODE_EXPERT,
+            label = "Definition", description = "A scoped namethat maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String definition;
 
     @ConfigurableField(editor = EditorBoolean.class, optional = true,
-            label = "Optional",
-            description = "A flag indicating if the component value can be omitted.")
+            profilesGui = MODE_SIMPLE_EXPERT,
+            label = "Optional", description = "A flag indicating if the component value can be omitted.")
     @EditorBoolean.EdOptsBool(dflt = false)
     private boolean optional;
 
     @ConfigurableField(editor = EditorBoolean.class, optional = true,
-            label = "Updatable",
-            description = "A flag indicating if the component value is fixed or can be updated.")
+            profilesGui = MODE_EXPERT,
+            label = "Updatable", description = "A flag indicating if the component value is fixed or can be updated.")
     @EditorBoolean.EdOptsBool(dflt = false)
     private boolean updatable;
 

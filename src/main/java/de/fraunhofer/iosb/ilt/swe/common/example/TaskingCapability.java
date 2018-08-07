@@ -18,12 +18,11 @@
 package de.fraunhofer.iosb.ilt.swe.common.example;
 
 import com.google.gson.JsonElement;
-
 import de.fraunhofer.iosb.ilt.configurable.ConfigEditor;
 import de.fraunhofer.iosb.ilt.configurable.Configurable;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorSubclass;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
+import de.fraunhofer.iosb.ilt.swe.common.AbstractSWE;
 
 /**
  * @author scf
@@ -44,6 +43,7 @@ public class TaskingCapability implements Configurable<Void, Void> {
     public ConfigEditor<?> getConfigEditor(Void context, Void edtCtx) {
         if (configEditor == null) {
             configEditor = new EditorSubclass(context, edtCtx, AbstractDataComponent.class, "taskingParameters", "The parameters for this taskingCapability");
+            configEditor.setProfilesEdit(AbstractSWE.MODE_SIMPLE + "," + AbstractSWE.MODE_EXPERT);
             configEditor.setMerge(true);
             configEditor.setNameField("type");
         }
