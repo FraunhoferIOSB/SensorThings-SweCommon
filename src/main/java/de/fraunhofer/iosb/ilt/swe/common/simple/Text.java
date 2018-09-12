@@ -17,11 +17,17 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,6 +35,11 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
  */
 @ConfigurableClass(jsonName = "Text")
 public class Text extends AbstractSimpleComponent {
+
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Text.class);
 
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_VALUE,
@@ -48,6 +59,23 @@ public class Text extends AbstractSimpleComponent {
 
     public AllowedTokens getConstraint() {
         return constraint;
+    }
+
+    @Override
+    public JsonElement getValueJson() {
+        return new JsonPrimitive(value);
+    }
+
+    @Override
+    public void setValueJson(JsonElement jsonValue) {
+        if (!jsonValue.isJsonPrimitive()) {
+            LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
+            return;
+        }
+        value = jsonValue.getAsJsonPrimitive().getAsString();
+        EditorMap<?> editor = getConfigEditor(null, null);
+        AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
+        valueEditorItem.editor.setValue(value);
     }
 
 }

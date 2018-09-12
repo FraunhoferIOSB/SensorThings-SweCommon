@@ -17,10 +17,16 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_VALUE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -29,10 +35,32 @@ import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_VALUE;
 @ConfigurableClass(jsonName = "Boolean")
 public class SweBoolean extends AbstractSimpleComponent {
 
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SweBoolean.class);
+
     @ConfigurableField(editor = EditorBoolean.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The value of this Boolean Component.")
-    @EditorBoolean.EdOptsBool(dflt = false)
+    @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_VALUE)
     private Boolean value;
+
+    @Override
+    public JsonElement getValueJson() {
+        return new JsonPrimitive(value);
+    }
+
+    @Override
+    public void setValueJson(JsonElement jsonValue) {
+        if (!jsonValue.isJsonPrimitive()) {
+            LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
+            return;
+        }
+        value = jsonValue.getAsJsonPrimitive().getAsBoolean();
+        EditorMap<?> editor = getConfigEditor(null, null);
+        AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
+        valueEditorItem.editor.setValue(value);
+    }
 
 }

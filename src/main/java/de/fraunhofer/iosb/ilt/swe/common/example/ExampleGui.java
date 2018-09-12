@@ -94,6 +94,38 @@ public class ExampleGui extends javax.swing.JFrame {
         panelValueEditor.add(editorValues.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
     }
 
+    public void printValues() {
+        if (editorValues == null) {
+            return;
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement config = editorValues.getConfig();
+
+        TaskingCapability taskingCapability = new TaskingCapability();
+        taskingCapability.configure(config, null, null);
+        JsonElement valueJson = taskingCapability.getValueJson();
+
+        String jsonString = gson.toJson(valueJson);
+        jsonValueTextArea.setText(jsonString);
+    }
+
+    public void loadValues() {
+        if (editorValues == null) {
+            return;
+        }
+        JsonElement config = editorValues.getConfig();
+
+        TaskingCapability taskingCapability = new TaskingCapability();
+        taskingCapability.configure(config, null, null);
+        JsonElement valueJson = new JsonParser().parse(jsonValueTextArea.getText());
+
+        editorValues = taskingCapability.getConfigEditor(null, null);
+        editorValues.setProfile(AbstractSWE.MODE_VALUE);
+        panelValueEditor.removeAll();
+        panelValueEditor.add(editorValues.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
+        taskingCapability.setValueJson(valueJson);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -105,8 +137,6 @@ public class ExampleGui extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jsonTextArea = new javax.swing.JTextArea();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -120,6 +150,12 @@ public class ExampleGui extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         panelValueEditor = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jSplitPane3 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jsonTextArea = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jsonValueTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SensorThings SWE-Common Example");
@@ -127,12 +163,6 @@ public class ExampleGui extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(500);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.5);
-
-        jsonTextArea.setColumns(20);
-        jsonTextArea.setRows(5);
-        jScrollPane1.setViewportView(jsonTextArea);
-
-        jSplitPane1.setBottomComponent(jScrollPane1);
 
         jSplitPane2.setDividerLocation(450);
         jSplitPane2.setResizeWeight(0.5);
@@ -199,9 +229,14 @@ public class ExampleGui extends javax.swing.JFrame {
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jButton2.setText("To JSON ↓");
+        jButton2.setText("Value ↓");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 1.0;
@@ -211,13 +246,13 @@ public class ExampleGui extends javax.swing.JFrame {
         jScrollPane3.setViewportView(panelValueEditor);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanel2.add(jScrollPane3, gridBagConstraints);
 
-        jButton3.setText("⤴");
+        jButton3.setText("Structure ⤴");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -226,13 +261,43 @@ public class ExampleGui extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 1.0;
         jPanel2.add(jButton3, gridBagConstraints);
+
+        jButton4.setText("Value ↑");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jButton4, gridBagConstraints);
 
         jSplitPane2.setRightComponent(jPanel2);
 
         jSplitPane1.setTopComponent(jSplitPane2);
+
+        jSplitPane3.setDividerLocation(450);
+        jSplitPane3.setResizeWeight(0.5);
+
+        jsonTextArea.setColumns(20);
+        jsonTextArea.setRows(5);
+        jScrollPane1.setViewportView(jsonTextArea);
+
+        jSplitPane3.setLeftComponent(jScrollPane1);
+
+        jsonValueTextArea.setColumns(20);
+        jsonValueTextArea.setRows(5);
+        jScrollPane4.setViewportView(jsonValueTextArea);
+
+        jSplitPane3.setRightComponent(jScrollPane4);
+
+        jSplitPane1.setRightComponent(jSplitPane3);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
@@ -254,6 +319,14 @@ public class ExampleGui extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         copyEditorToValuesEditor();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        printValues();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        loadValues();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,6 +354,7 @@ public class ExampleGui extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JCheckBox jCheckBoxProfile;
@@ -289,9 +363,12 @@ public class ExampleGui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JSplitPane jSplitPane3;
     private javax.swing.JTextArea jsonTextArea;
+    private javax.swing.JTextArea jsonValueTextArea;
     private javax.swing.JPanel panelEditor;
     private javax.swing.JPanel panelValueEditor;
     // End of variables declaration//GEN-END:variables

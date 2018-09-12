@@ -22,6 +22,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mainClass>de.fraunhofer.iosb.ilt.swe.common.example.ExampleGui</mainClass>
+
         <configurable.version>0.11-SNAPSHOT</configurable.version>
         <logback.version>1.1.8</logback.version>
     </properties>

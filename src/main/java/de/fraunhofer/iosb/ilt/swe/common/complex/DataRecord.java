@@ -16,6 +16,8 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.complex;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
@@ -42,6 +44,30 @@ public class DataRecord extends AbstractDataComponent {
 
     public List<Field> getFields() {
         return fields;
+    }
+
+    @Override
+    public JsonElement getValueJson() {
+        JsonObject object = new JsonObject();
+        for (Field item : fields) {
+            String itemName = item.getName();
+            JsonElement itemValue = item.getField().getValueJson();
+            object.add(itemName, itemValue);
+        }
+        return object;
+    }
+
+    @Override
+    public void setValueJson(JsonElement value) {
+        if (!value.isJsonObject()) {
+            return;
+        }
+        JsonObject asJsonObject = value.getAsJsonObject();
+        for (Field item : fields) {
+            String itemName = item.getName();
+            JsonElement itemValue = asJsonObject.get(itemName);
+            item.getField().setValueJson(itemValue);
+        }
     }
 
 }

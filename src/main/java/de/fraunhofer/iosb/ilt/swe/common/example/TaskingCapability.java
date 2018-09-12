@@ -50,4 +50,11 @@ public class TaskingCapability implements Configurable<Void, Void> {
         return configEditor;
     }
 
+    public JsonElement getValueJson() {
+        return component.getValueJson();
+    }
+
+    public void setValueJson(JsonElement valueJson) {
+        component.setValueJson(valueJson);
+    }
 }

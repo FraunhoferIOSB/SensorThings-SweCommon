@@ -17,11 +17,17 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorLong;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,10 +36,15 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 @ConfigurableClass(jsonName = "Count")
 public class Count extends AbstractSimpleComponent {
 
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(Count.class);
+
     @ConfigurableField(editor = EditorLong.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "an integer that must be within one of the constraint intervals or exactly one of the enumerated values.")
-    @EditorLong.EdOptsLong(dflt = 0)
+    @EditorLong.EdOptsLong(dflt = 0, profilesEdit = MODE_VALUE)
     private Long value;
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
@@ -48,6 +59,28 @@ public class Count extends AbstractSimpleComponent {
 
     public AllowedValues getConstraint() {
         return constraint;
+    }
+
+    @Override
+    public JsonElement getValueJson() {
+        return new JsonPrimitive(value);
+    }
+
+    @Override
+    public void setValueJson(JsonElement jsonValue) {
+        if (!jsonValue.isJsonPrimitive()) {
+            LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
+            return;
+        }
+        try {
+            value = jsonValue.getAsJsonPrimitive().getAsLong();
+            EditorMap<?> editor = getConfigEditor(null, null);
+            AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
+            valueEditorItem.editor.setValue(value);
+        } catch (NumberFormatException exc) {
+            LOGGER.warn("Given value is not a Long: {}", jsonValue);
+            LOGGER.trace("", exc);
+        }
     }
 
 }

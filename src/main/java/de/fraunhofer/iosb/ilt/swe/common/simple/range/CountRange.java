@@ -17,14 +17,21 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorLong;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -32,6 +39,11 @@ import java.util.List;
  */
 @ConfigurableClass(jsonName = "CountRange")
 public class CountRange extends AbstractSimpleComponent {
+
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CountRange.class);
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
@@ -65,6 +77,37 @@ public class CountRange extends AbstractSimpleComponent {
 
     public void setConstraint(AllowedValues constraint) {
         this.constraint = constraint;
+    }
+
+    @Override
+    public JsonElement getValueJson() {
+        JsonArray array = new JsonArray(value.size());
+        for (Long item : value) {
+            array.add(new JsonPrimitive(item));
+        }
+        return array;
+    }
+
+    @Override
+    public void setValueJson(JsonElement jsonValue) {
+        if (!jsonValue.isJsonArray()) {
+            LOGGER.warn("Given value is not a JsonArray: {}", jsonValue);
+            return;
+        }
+        value.clear();
+        JsonArray valueArray = jsonValue.getAsJsonArray();
+        for (JsonElement item : valueArray) {
+            try {
+                long itemValue = item.getAsLong();
+                value.add(itemValue);
+            } catch (NumberFormatException exc) {
+                LOGGER.warn("Given value is not a Long: {}", item);
+                LOGGER.trace("", exc);
+            }
+        }
+        EditorMap<?> editor = getConfigEditor(null, null);
+        AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
+        valueEditorItem.editor.setValue(value);
     }
 
 }

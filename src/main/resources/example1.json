@@ -1,0 +1,21 @@
+{
+  "field": [
+    {
+      "uom": "°C",
+      "constraint": {
+        "interval": [
+          [
+            10.0,
+            25.0
+          ]
+        ]
+      },
+      "label": "Setpoint",
+      "type": "Quantity",
+      "name": "setpoint"
+    }
+  ],
+  "type": "DataRecord"
+}
+
+

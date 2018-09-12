@@ -17,6 +17,7 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common;
 
+import com.google.gson.JsonElement;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
@@ -36,13 +37,13 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
     @ConfigurableField(editor = EditorBoolean.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Optional", description = "A flag indicating if the component value can be omitted.")
-    @EditorBoolean.EdOptsBool(dflt = false)
+    @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_SIMPLE_EXPERT)
     private boolean optional;
 
     @ConfigurableField(editor = EditorBoolean.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Updatable", description = "A flag indicating if the component value is fixed or can be updated.")
-    @EditorBoolean.EdOptsBool(dflt = false)
+    @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_SIMPLE_EXPERT)
     private boolean updatable;
 
     public String getDefinition() {
@@ -57,4 +58,7 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
         return updatable;
     }
 
+    public abstract JsonElement getValueJson();
+
+    public abstract void setValueJson(JsonElement value);
 }

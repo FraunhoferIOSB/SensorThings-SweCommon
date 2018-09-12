@@ -1,0 +1,38 @@
+{
+  "field": [
+    {
+      "uom": "°C",
+      "constraint": {
+        "value": [
+          30.0,
+          40.0,
+          60.0,
+          90.0
+        ]
+      },
+      "optional": false,
+      "label": "Temperature",
+      "type": "Quantity",
+      "name": "temperature"
+    },
+    {
+      "optional": true,
+      "label": "Spin Dry",
+      "type": "Boolean",
+      "name": "spindry"
+    },
+    {
+      "constraint": {
+        "value": [
+          "Wool",
+          "Synthetics",
+          "Cotton"
+        ]
+      },
+      "label": "Washing Program",
+      "type": "Category",
+      "name": "program"
+    }
+  ],
+  "type": "DataRecord"
+}

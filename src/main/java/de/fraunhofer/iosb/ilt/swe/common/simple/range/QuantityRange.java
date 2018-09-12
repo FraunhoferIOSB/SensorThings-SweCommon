@@ -17,17 +17,24 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
+import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorBigDecimal;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorDouble;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
+import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.math.BigDecimal;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -35,6 +42,11 @@ import java.util.List;
  */
 @ConfigurableClass(jsonName = "QuantityRange")
 public class QuantityRange extends AbstractSimpleComponent {
+
+    /**
+     * The logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuantityRange.class);
 
     @ConfigurableField(editor = EditorString.class, optional = false,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -45,10 +57,10 @@ public class QuantityRange extends AbstractSimpleComponent {
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The starting end ending values of this CategoryRange.")
-    @EditorList.EdOptsList(editor = EditorDouble.class,
+    @EditorList.EdOptsList(editor = EditorBigDecimal.class,
             profilesEdit = MODE_SIMPLE_EXPERT,
             minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
-    @EditorDouble.EdOptsDouble(dflt = 0)
+    @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
     private List<BigDecimal> value;
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
@@ -56,5 +68,36 @@ public class QuantityRange extends AbstractSimpleComponent {
             label = "Constraint", description = "A limited list of possible values.")
     @EditorClass.EdOptsClass(clazz = AllowedValues.class)
     private AllowedValues constraint;
+
+    @Override
+    public JsonElement getValueJson() {
+        JsonArray array = new JsonArray(value.size());
+        for (BigDecimal item : value) {
+            array.add(new JsonPrimitive(item));
+        }
+        return array;
+    }
+
+    @Override
+    public void setValueJson(JsonElement jsonValue) {
+        if (!jsonValue.isJsonArray()) {
+            LOGGER.warn("Given value is not a JsonArray: {}", jsonValue);
+            return;
+        }
+        value.clear();
+        JsonArray valueArray = jsonValue.getAsJsonArray();
+        for (JsonElement item : valueArray) {
+            try {
+                BigDecimal itemValue = item.getAsBigDecimal();
+                value.add(itemValue);
+            } catch (NumberFormatException exc) {
+                LOGGER.warn("Given value is not a BigDecimal: {}", item);
+                LOGGER.trace("", exc);
+            }
+        }
+        EditorMap<?> editor = getConfigEditor(null, null);
+        AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
+        valueEditorItem.editor.setValue(value);
+    }
 
 }
