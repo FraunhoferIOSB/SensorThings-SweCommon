@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.fraunhofer.iosb.ilt.FROST-Server</groupId>
+    <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SensorThings-SWE-Common</name>
     <description>A set of classes to deal with the SWE-Common encoded parts of the SensorThings API.</description>
-    <url>https://github.com/FraunhoferIOSB/FROST-Manager</url>
+    <url>https://github.com/hylkevds/SensorThings-SWE-Common</url>
     <inceptionYear>2018</inceptionYear>
 
     <properties>
@@ -20,7 +20,7 @@
 
         <bintray.subject>fraunhoferiosb</bintray.subject>
         <bintray.repo>Maven</bintray.repo>
-        <bintray.package>FROST-Manager</bintray.package>
+        <bintray.package>SensorThings-SWE-Common</bintray.package>
 
         <configurable.version>0.11</configurable.version>
         <logback.version>1.1.8</logback.version>
