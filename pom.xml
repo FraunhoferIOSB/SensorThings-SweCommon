@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>de.fraunhofer.iosb.ilt.FROST-Server</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SensorThings-SWE-Common</name>
-    <version>0.1-SNAPSHOT</version>
+    <description>A set of classes to deal with the SWE-Common encoded parts of the SensorThings API.</description>
+    <url>https://github.com/FraunhoferIOSB/FROST-Manager</url>
+    <inceptionYear>2018</inceptionYear>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <mainClass>de.fraunhofer.iosb.ilt.swe.common.example.ExampleGui</mainClass>
+
+        <bintray.subject>fraunhoferiosb</bintray.subject>
+        <bintray.repo>Maven</bintray.repo>
+        <bintray.package>FROST-Manager</bintray.package>
+
+        <configurable.version>0.11</configurable.version>
+        <logback.version>1.1.8</logback.version>
+    </properties>
 
     <licenses>
         <license>
@@ -17,28 +34,38 @@
         </license>
     </licenses>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <mainClass>de.fraunhofer.iosb.ilt.swe.common.example.ExampleGui</mainClass>
+    <developers>
+        <developer>
+            <name>Hylke van der Schaaf</name>
+            <email>hylke.vanderschaaf@iosb.fraunhofer.de</email>
+            <organization>Fraunhofer IOSB</organization>
+            <organizationUrl>https://www.iosb.fraunhofer.de</organizationUrl>
+        </developer>
+    </developers>
 
-        <configurable.version>0.11-SNAPSHOT</configurable.version>
-        <logback.version>1.1.8</logback.version>
-    </properties>
+    <organization>
+        <name>Fraunhofer IOSB</name>
+        <url>http://iosb.fraunhofer.de</url>
+    </organization>
 
-    <description>A set of classes to deal with the SWE-Common encoded parts of the SensorThings API.</description>
-    <inceptionYear>2018</inceptionYear>
+    <scm>
+        <url>https://github.com/hylkevds/SensorThings-SweCommon</url>
+        <connection>scm:git:git@github.com:hylkevds/SensorThings-SweCommon.git</connection>
+        <developerConnection>scm:git:git@github.com:hylkevds/SensorThings-SweCommon.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/hylkevds/SensorThings-SweCommon/issues</url>
     </issueManagement>
 
-    <organization>
-        <name>Fraunhofer IOSB</name>
-        <url>http://iosb.fraunhofer.de</url>
-    </organization>
+    <distributionManagement>
+        <repository>
+            <id>fraunhoferiosb-Maven</id>
+            <url>https://api.bintray.com/maven/${bintray.subject}/${bintray.repo}/${bintray.package}/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -64,24 +91,48 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
         </plugins>
     </build>
 
     <repositories>
         <repository>
-            <id>bintray</id>
-            <url>https://jcenter.bintray.com</url>
+            <id>bintray-fraunhoferiosb-Maven</id>
+            <url>https://dl.bintray.com/fraunhoferiosb/Maven</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>bintray-fraunhoferiosb-Maven</id>
-            <name>Fraunhofer Iosb Maven</name>
-            <url>https://dl.bintray.com/fraunhoferiosb/Maven</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

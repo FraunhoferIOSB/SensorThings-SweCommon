@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class ExampleGui extends javax.swing.JFrame {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExampleGui.class.getName());
-    private ConfigEditor editor;
+    private ConfigEditor editorStructure;
     private ConfigEditor editorValues;
 
     /**
@@ -47,20 +47,20 @@ public class ExampleGui extends javax.swing.JFrame {
 
     private void addEditorToGui() {
         TaskingCapability taskingCapability = new TaskingCapability();
-        editor = taskingCapability.getConfigEditor(null, null);
+        editorStructure = taskingCapability.getConfigEditor(null, null);
         toggledMode();
-        panelEditor.add(editor.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
+        panelEditor.add(editorStructure.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
     }
 
     private void useConfig() {
-        JsonElement config = editor.getConfig();
+        JsonElement config = editorStructure.getConfig();
         TaskingCapability taskingCapability = new TaskingCapability();
         taskingCapability.configure(config, null, null);
     }
 
     private void printConfig() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement config = editor.getConfig();
+        JsonElement config = editorStructure.getConfig();
         String jsonString = gson.toJson(config);
         jsonTextArea.setText(jsonString);
         LOGGER.info("Our configuration is:\n{}", jsonString);
@@ -72,21 +72,21 @@ public class ExampleGui extends javax.swing.JFrame {
 
     public void loadConfig(String jsonString) {
         JsonElement config = new JsonParser().parse(jsonString);
-        editor.setConfig(config);
+        editorStructure.setConfig(config);
     }
 
     public void toggledMode() {
         // Ensure all fields are read-in, so no user-text is lost.
-        editor.getConfig();
+        editorStructure.getConfig();
         if (jCheckBoxProfile.isSelected()) {
-            editor.setProfile(AbstractSWE.MODE_SIMPLE);
+            editorStructure.setProfile(AbstractSWE.MODE_SIMPLE);
         } else {
-            editor.setProfile(AbstractSWE.MODE_EXPERT);
+            editorStructure.setProfile(AbstractSWE.MODE_EXPERT);
         }
     }
 
     public void copyEditorToValuesEditor() {
-        JsonElement config = editor.getConfig();
+        JsonElement config = editorStructure.getConfig();
         TaskingCapability taskingCapability = new TaskingCapability();
         editorValues = taskingCapability.getConfigEditor(null, null);
         editorValues.setProfile(AbstractSWE.MODE_VALUE);
