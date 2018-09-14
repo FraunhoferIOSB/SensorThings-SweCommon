@@ -63,4 +63,9 @@ public class SweBoolean extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    @Override
+    public boolean valueIsValid() {
+        return true;
+    }
+
 }

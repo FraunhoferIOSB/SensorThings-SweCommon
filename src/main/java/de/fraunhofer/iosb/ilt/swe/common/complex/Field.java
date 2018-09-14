@@ -58,4 +58,8 @@ public class Field extends AbstractConfigurable<Void, Void> {
         return field;
     }
 
+    public boolean valueIsValid() {
+        return field.valueIsValid();
+    }
+
 }

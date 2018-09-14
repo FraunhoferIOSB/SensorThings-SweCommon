@@ -75,4 +75,8 @@ public class AllowedTimes extends AbstractConfigurable<Void, Void> {
         return significantFigures;
     }
 
+    public boolean isValid(String input, String uom) {
+        return true;
+    }
+
 }

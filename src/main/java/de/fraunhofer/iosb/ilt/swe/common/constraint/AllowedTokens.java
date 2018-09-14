@@ -17,6 +17,7 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
+import com.google.common.base.Strings;
 import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
@@ -24,6 +25,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -54,6 +56,24 @@ public class AllowedTokens extends AbstractConfigurable<Void, Void> {
 
     public String getPattern() {
         return pattern;
+    }
+
+    public boolean isValid(String input) {
+        if (value != null) {
+            for (String item : value) {
+                if (item.equals(input)) {
+                    return true;
+                }
+            }
+        }
+        if (!Strings.isNullOrEmpty(pattern)) {
+            Pattern compiled = Pattern.compile(pattern);
+            if (compiled.matcher(input).matches()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

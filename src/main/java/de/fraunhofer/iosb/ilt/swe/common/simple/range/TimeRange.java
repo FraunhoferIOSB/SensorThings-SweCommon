@@ -118,4 +118,20 @@ public class TimeRange extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        for (String item : value) {
+            if (!constraint.isValid(item, uom)) {
+                LOGGER.error("Item '{}' does not fit the constraint", item);
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

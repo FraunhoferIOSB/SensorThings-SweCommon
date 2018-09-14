@@ -70,4 +70,17 @@ public class DataRecord extends AbstractDataComponent {
         }
     }
 
+    @Override
+    public boolean valueIsValid() {
+        if (fields == null) {
+            return true;
+        }
+        for (Field field : fields) {
+            if (!field.valueIsValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

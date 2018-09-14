@@ -23,6 +23,7 @@ import com.google.gson.JsonParser;
 import de.fraunhofer.iosb.ilt.configurable.ConfigEditor;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractSWE;
 import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,6 +127,20 @@ public class ExampleGui extends javax.swing.JFrame {
         taskingCapability.setValueJson(valueJson);
     }
 
+    public void validateValues() {
+        if (editorValues == null) {
+            return;
+        }
+        JsonElement config = editorValues.getConfig();
+        TaskingCapability taskingCapability = new TaskingCapability();
+        taskingCapability.configure(config, null, null);
+        if (taskingCapability.valueIsValid()) {
+            JOptionPane.showMessageDialog(this, "Everything checks out.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Something is wrong.");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -139,7 +154,6 @@ public class ExampleGui extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
         jCheckBoxProfile = new javax.swing.JCheckBox();
@@ -151,6 +165,7 @@ public class ExampleGui extends javax.swing.JFrame {
         panelValueEditor = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jSplitPane3 = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jsonTextArea = new javax.swing.JTextArea();
@@ -169,14 +184,6 @@ public class ExampleGui extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("...");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 1.0;
-        jPanel1.add(jButton1, gridBagConstraints);
-
         jButtonSave.setText("To JSON ↓");
         jButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,8 +191,10 @@ public class ExampleGui extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
         jPanel1.add(jButtonSave, gridBagConstraints);
 
         jButtonLoad.setText("Load JSON ↑");
@@ -195,7 +204,7 @@ public class ExampleGui extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 1.0;
@@ -209,8 +218,9 @@ public class ExampleGui extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         jPanel1.add(jCheckBoxProfile, gridBagConstraints);
 
         panelEditor.setLayout(new java.awt.BorderLayout());
@@ -219,7 +229,7 @@ public class ExampleGui extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -246,7 +256,7 @@ public class ExampleGui extends javax.swing.JFrame {
         jScrollPane3.setViewportView(panelValueEditor);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -277,6 +287,19 @@ public class ExampleGui extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.weightx = 1.0;
         jPanel2.add(jButton4, gridBagConstraints);
+
+        jButton1.setText("Validate");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 1.0;
+        jPanel2.add(jButton1, gridBagConstraints);
 
         jSplitPane2.setRightComponent(jPanel2);
 
@@ -327,6 +350,10 @@ public class ExampleGui extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         loadValues();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        validateValues();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

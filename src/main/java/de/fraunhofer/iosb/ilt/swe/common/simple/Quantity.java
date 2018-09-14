@@ -97,4 +97,14 @@ public class Quantity extends AbstractSimpleComponent {
         }
     }
 
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        return constraint.isValid(value);
+    }
+
 }

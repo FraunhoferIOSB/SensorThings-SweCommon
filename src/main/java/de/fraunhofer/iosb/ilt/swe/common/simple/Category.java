@@ -82,4 +82,14 @@ public class Category extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        return constraint.isValid(value);
+    }
+
 }

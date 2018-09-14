@@ -29,6 +29,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorLong;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
+import java.math.BigDecimal;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +109,22 @@ public class CountRange extends AbstractSimpleComponent {
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
         valueEditorItem.editor.setValue(value);
+    }
+
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        for (Long item : value) {
+            if (!constraint.isValid(new BigDecimal(item))) {
+                LOGGER.error("Item '{}' does not fit the constraint", item);
+                return false;
+            }
+        }
+        return true;
     }
 
 }

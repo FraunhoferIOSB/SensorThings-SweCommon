@@ -26,6 +26,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorLong;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
+import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +82,16 @@ public class Count extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a Long: {}", jsonValue);
             LOGGER.trace("", exc);
         }
+    }
+
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        return constraint.isValid(new BigDecimal(value));
     }
 
 }

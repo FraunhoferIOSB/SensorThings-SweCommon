@@ -68,7 +68,7 @@ public class Time extends AbstractSimpleComponent {
             label = "Unit of Measurement",
             description = "The “uom” attribute is mandatory since time is a continuous property that shall always be\n"
             + "expressed in a well defined scale. The only units allowed are obviously time units.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT, dflt = "http://www.opengis.net/def/uom/ISO‐8601/0/Gregorian")
     private String uom;
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
@@ -107,6 +107,16 @@ public class Time extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not Text: {}", jsonValue);
             LOGGER.trace("", exc);
         }
+    }
+
+    public boolean valueIsValid() {
+        if (value == null) {
+            return false;
+        }
+        if (constraint == null) {
+            return true;
+        }
+        return constraint.isValid(value, uom);
     }
 
 }

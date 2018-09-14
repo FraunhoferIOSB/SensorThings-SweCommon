@@ -61,4 +61,11 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
     public abstract JsonElement getValueJson();
 
     public abstract void setValueJson(JsonElement value);
+
+    /**
+     * Checks if any set values are valid for any set constraints.
+     *
+     * @return true if the values are valid.
+     */
+    public abstract boolean valueIsValid();
 }

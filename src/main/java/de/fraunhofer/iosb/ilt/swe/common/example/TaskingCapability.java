@@ -57,4 +57,9 @@ public class TaskingCapability implements Configurable<Void, Void> {
     public void setValueJson(JsonElement valueJson) {
         component.setValueJson(valueJson);
     }
+
+    public boolean valueIsValid() {
+        return component.valueIsValid();
+    }
+
 }
