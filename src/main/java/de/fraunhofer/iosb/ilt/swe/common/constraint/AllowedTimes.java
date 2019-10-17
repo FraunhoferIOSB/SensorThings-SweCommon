@@ -17,23 +17,25 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorInt;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import de.fraunhofer.iosb.ilt.swe.common.AbstractSWEIdentifiable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(
-        jsonName = "AllowedValues",
+        jsonName = "AllowedTimes",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTimes extends AbstractConfigurable<Void, Void> {
+public class AllowedTimes extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -56,6 +58,39 @@ public class AllowedTimes extends AbstractConfigurable<Void, Void> {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private List<List<String>> interval;
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + Objects.hashCode(this.value);
+        hash = 11 * hash + Objects.hashCode(this.interval);
+        hash = 11 * hash + Objects.hashCode(this.significantFigures);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AllowedTimes other = (AllowedTimes) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.interval, other.interval)) {
+            return false;
+        }
+        if (!Objects.equals(this.significantFigures, other.significantFigures)) {
+            return false;
+        }
+        return true;
+    }
+
     @ConfigurableField(editor = EditorInt.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Significant Figures",
@@ -77,6 +112,18 @@ public class AllowedTimes extends AbstractConfigurable<Void, Void> {
 
     public boolean isValid(String input, String uom) {
         return true;
+    }
+
+    public void setValue(List<String> value) {
+        this.value = value;
+    }
+
+    public void setInterval(List<List<String>> interval) {
+        this.interval = interval;
+    }
+
+    public void setSignificantFigures(Integer significantFigures) {
+        this.significantFigures = significantFigures;
     }
 
 }

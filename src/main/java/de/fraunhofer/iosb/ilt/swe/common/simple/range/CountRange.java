@@ -31,6 +31,7 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,35 @@ public class CountRange extends AbstractSimpleComponent {
             minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
     @EditorLong.EdOptsLong(dflt = 0)
     private List<Long> value;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.value);
+        hash = 79 * hash + Objects.hashCode(this.constraint);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CountRange other = (CountRange) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,

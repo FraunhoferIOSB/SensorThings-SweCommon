@@ -21,10 +21,12 @@ import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import java.util.Objects;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(profilesEdit = MODE_SIMPLE_EXPERT)
 public abstract class AbstractSWEIdentifiable extends AbstractSWE {
@@ -40,6 +42,39 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
             label = "Label", description = "A short descriptive name.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String label;
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.identifier);
+        hash = 67 * hash + Objects.hashCode(this.label);
+        hash = 67 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractSWEIdentifiable other = (AbstractSWEIdentifiable) obj;
+        if (!Objects.equals(this.identifier, other.identifier)) {
+            return false;
+        }
+        if (!Objects.equals(this.label, other.label)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
 
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
@@ -57,6 +92,18 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

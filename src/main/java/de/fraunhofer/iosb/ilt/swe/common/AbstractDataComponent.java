@@ -21,16 +21,24 @@ import com.google.gson.JsonElement;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
+import java.util.Objects;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
-            label = "Definition", description = "A scoped namethat maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
+            label = "Name", description = "A name describing this entity.")
+    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    private String name;
+
+    @ConfigurableField(editor = EditorString.class, optional = true,
+            profilesGui = MODE_EXPERT,
+            label = "Definition", description = "A scoped name that maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String definition;
 
@@ -48,6 +56,43 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
 
     public String getDefinition() {
         return definition;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.definition);
+        hash = 29 * hash + (this.optional ? 1 : 0);
+        hash = 29 * hash + (this.updatable ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractDataComponent other = (AbstractDataComponent) obj;
+        if (this.optional != other.optional) {
+            return false;
+        }
+        if (this.updatable != other.updatable) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.definition, other.definition)) {
+            return false;
+        }
+        return true;
     }
 
     public Boolean isOptional() {
@@ -68,4 +113,24 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
      * @return true if the values are valid.
      */
     public abstract boolean valueIsValid();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
+    }
+
+    public void setUpdatable(boolean updatable) {
+        this.updatable = updatable;
+    }
 }

@@ -30,12 +30,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTimes;
 import de.fraunhofer.iosb.ilt.swe.common.simple.*;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "TimeRange")
 public class TimeRange extends AbstractSimpleComponent {
@@ -44,7 +46,6 @@ public class TimeRange extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeRange.class);
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Reference Time",
@@ -56,7 +57,6 @@ public class TimeRange extends AbstractSimpleComponent {
             + "calendar date/time combination.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String referenceTime;
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Local Frame",
@@ -67,6 +67,46 @@ public class TimeRange extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String localFrame;
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.referenceTime);
+        hash = 97 * hash + Objects.hashCode(this.localFrame);
+        hash = 97 * hash + Objects.hashCode(this.uom);
+        hash = 97 * hash + Objects.hashCode(this.constraint);
+        hash = 97 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TimeRange other = (TimeRange) obj;
+        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.localFrame, other.localFrame)) {
+            return false;
+        }
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return true;
+    }
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Unit of Measurement",
@@ -74,7 +114,6 @@ public class TimeRange extends AbstractSimpleComponent {
             + "expressed in a well defined scale. The only units allowed are obviously time units.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
-
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint",
@@ -82,7 +121,6 @@ public class TimeRange extends AbstractSimpleComponent {
             + "range of possible time values.")
     @EditorClass.EdOptsClass(clazz = AllowedTimes.class)
     private AllowedTimes constraint;
-
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The starting end ending values of this TimeRange.")
@@ -92,10 +130,50 @@ public class TimeRange extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private List<String> value;
 
+    public String getReferenceTime() {
+        return referenceTime;
+    }
+
+    public void setReferenceTime(String referenceTime) {
+        this.referenceTime = referenceTime;
+    }
+
+    public String getLocalFrame() {
+        return localFrame;
+    }
+
+    public void setLocalFrame(String localFrame) {
+        this.localFrame = localFrame;
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    public AllowedTimes getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(AllowedTimes constraint) {
+        this.constraint = constraint;
+    }
+
+    public List<String> getValue() {
+        return value;
+    }
+
+    public void setValue(List<String> value) {
+        this.value = value;
+    }
+
     @Override
     public JsonElement getValueJson() {
-        JsonArray array = new JsonArray(value.size());
-        for (String item : value) {
+        JsonArray array = new JsonArray(getValue().size());
+        for (String item : getValue()) {
             array.add(new JsonPrimitive(item));
         }
         return array;
@@ -107,25 +185,25 @@ public class TimeRange extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a JsonArray: {}", jsonValue);
             return;
         }
-        value.clear();
+        getValue().clear();
         JsonArray valueArray = jsonValue.getAsJsonArray();
         for (JsonElement item : valueArray) {
             String itemValue = item.getAsString();
-            value.add(itemValue);
+            getValue().add(itemValue);
         }
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-        valueEditorItem.editor.setValue(value);
+        valueEditorItem.editor.setValue(getValue());
     }
 
     public boolean valueIsValid() {
-        if (value == null) {
+        if (getValue() == null) {
             return false;
         }
-        if (constraint == null) {
+        if (getConstraint() == null) {
             return true;
         }
-        for (String item : value) {
+        for (String item : getValue()) {
             if (!constraint.isValid(item, uom)) {
                 LOGGER.error("Item '{}' does not fit the constraint", item);
                 return false;

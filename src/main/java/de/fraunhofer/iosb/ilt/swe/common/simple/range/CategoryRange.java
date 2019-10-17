@@ -31,12 +31,14 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "CategoryRange")
 public class CategoryRange extends AbstractSimpleComponent {
@@ -55,6 +57,39 @@ public class CategoryRange extends AbstractSimpleComponent {
     @EditorString.EdOptsString
     private List<String> value;
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.value);
+        hash = 59 * hash + Objects.hashCode(this.constraint);
+        hash = 59 * hash + Objects.hashCode(this.codeSpace);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CategoryRange other = (CategoryRange) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        if (!Objects.equals(this.codeSpace, other.codeSpace)) {
+            return false;
+        }
+        return true;
+    }
+
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
             label = "Allowed Tokens", description = "A limited list of possible values.")
@@ -62,6 +97,14 @@ public class CategoryRange extends AbstractSimpleComponent {
 
     //TODO
     private Map<String, String> codeSpace;
+
+    public void setValue(List<String> value) {
+        this.value = value;
+    }
+
+    public void setConstraint(AllowedTokens constraint) {
+        this.constraint = constraint;
+    }
 
     public AllowedTokens getConstraint() {
         return constraint;

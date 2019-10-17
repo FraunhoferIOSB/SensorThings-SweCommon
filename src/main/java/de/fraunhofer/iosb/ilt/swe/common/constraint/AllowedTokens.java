@@ -18,23 +18,27 @@
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
 import com.google.common.base.Strings;
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import de.fraunhofer.iosb.ilt.swe.common.AbstractSWEIdentifiable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(
         jsonName = "AllowedTokens",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTokens extends AbstractConfigurable<Void, Void> {
+public class AllowedTokens extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -43,12 +47,52 @@ public class AllowedTokens extends AbstractConfigurable<Void, Void> {
             profilesEdit = MODE_SIMPLE_EXPERT)
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private List<String> value;
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Pattern", description = "The regex(?) pattern that the value must match.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String pattern;
+
+    public AllowedTokens() {
+        this.value = new ArrayList<>();
+    }
+
+    public AllowedTokens(String... tokens) {
+        this.value = Arrays.asList(tokens);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.value);
+        hash = 37 * hash + Objects.hashCode(this.pattern);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AllowedTokens other = (AllowedTokens) obj;
+        if (!Objects.equals(this.pattern, other.pattern)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return true;
+    }
+
+    public AllowedTokens(String pattern) {
+        this.pattern = pattern;
+    }
 
     public List<String> getValue() {
         return value;
@@ -74,6 +118,14 @@ public class AllowedTokens extends AbstractConfigurable<Void, Void> {
         }
 
         return false;
+    }
+
+    public void setValue(List<String> value) {
+        this.value = value;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 
 }

@@ -26,12 +26,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Text")
 public class Text extends AbstractSimpleComponent {
@@ -53,6 +55,43 @@ public class Text extends AbstractSimpleComponent {
     @EditorClass.EdOptsClass(clazz = AllowedTokens.class)
     private AllowedTokens constraint;
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.value);
+        hash = 59 * hash + Objects.hashCode(this.constraint);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Text other = (Text) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
+
+    public void setConstraint(AllowedTokens constraint) {
+        this.constraint = constraint;
+    }
+
     public String getValue() {
         return value;
     }
@@ -72,7 +111,7 @@ public class Text extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
             return;
         }
-        value = jsonValue.getAsJsonPrimitive().getAsString();
+        setValue(jsonValue.getAsJsonPrimitive().getAsString());
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
         valueEditorItem.editor.setValue(value);

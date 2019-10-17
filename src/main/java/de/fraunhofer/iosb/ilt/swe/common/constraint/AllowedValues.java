@@ -17,24 +17,26 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBigDecimal;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorInt;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import de.fraunhofer.iosb.ilt.swe.common.AbstractSWEIdentifiable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(
         jsonName = "AllowedValues",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedValues extends AbstractConfigurable<Void, Void> {
+public class AllowedValues extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -43,6 +45,39 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
             profilesEdit = MODE_SIMPLE_EXPERT)
     @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
     private List<BigDecimal> value;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.value);
+        hash = 17 * hash + Objects.hashCode(this.interval);
+        hash = 17 * hash + Objects.hashCode(this.significantFigures);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AllowedValues other = (AllowedValues) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.interval, other.interval)) {
+            return false;
+        }
+        if (!Objects.equals(this.significantFigures, other.significantFigures)) {
+            return false;
+        }
+        return true;
+    }
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -92,5 +127,17 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
         }
 
         return false;
+    }
+
+    public void setValue(List<BigDecimal> value) {
+        this.value = value;
+    }
+
+    public void setInterval(List<List<BigDecimal>> interval) {
+        this.interval = interval;
+    }
+
+    public void setSignificantFigures(Integer significantFigures) {
+        this.significantFigures = significantFigures;
     }
 }

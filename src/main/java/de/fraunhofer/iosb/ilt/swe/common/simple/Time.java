@@ -26,12 +26,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTimes;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Time")
 public class Time extends AbstractSimpleComponent {
@@ -40,7 +42,6 @@ public class Time extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Time.class);
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Reference Time",
@@ -53,6 +54,46 @@ public class Time extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String referenceTime;
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.referenceTime);
+        hash = 19 * hash + Objects.hashCode(this.localFrame);
+        hash = 19 * hash + Objects.hashCode(this.uom);
+        hash = 19 * hash + Objects.hashCode(this.constraint);
+        hash = 19 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Time other = (Time) obj;
+        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.localFrame, other.localFrame)) {
+            return false;
+        }
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Local Frame",
@@ -62,7 +103,6 @@ public class Time extends AbstractSimpleComponent {
             + "reference to this frame.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String localFrame;
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Unit of Measurement",
@@ -70,7 +110,6 @@ public class Time extends AbstractSimpleComponent {
             + "expressed in a well defined scale. The only units allowed are obviously time units.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT, dflt = "http://www.opengis.net/def/uom/ISO‐8601/0/Gregorian")
     private String uom;
-
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint",
@@ -78,7 +117,6 @@ public class Time extends AbstractSimpleComponent {
             + "range of possible time values.")
     @EditorClass.EdOptsClass(clazz = AllowedTimes.class)
     private AllowedTimes constraint;
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value",
@@ -87,9 +125,49 @@ public class Time extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
 
+    public String getReferenceTime() {
+        return referenceTime;
+    }
+
+    public void setReferenceTime(String referenceTime) {
+        this.referenceTime = referenceTime;
+    }
+
+    public String getLocalFrame() {
+        return localFrame;
+    }
+
+    public void setLocalFrame(String localFrame) {
+        this.localFrame = localFrame;
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    public AllowedTimes getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(AllowedTimes constraint) {
+        this.constraint = constraint;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public JsonElement getValueJson() {
-        return new JsonPrimitive(value);
+        return new JsonPrimitive(getValue());
     }
 
     @Override
@@ -99,10 +177,10 @@ public class Time extends AbstractSimpleComponent {
             return;
         }
         try {
-            value = jsonValue.getAsJsonPrimitive().getAsString();
+            setValue(jsonValue.getAsJsonPrimitive().getAsString());
             EditorMap<?> editor = getConfigEditor(null, null);
             AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-            valueEditorItem.editor.setValue(value);
+            valueEditorItem.editor.setValue(getValue());
         } catch (NumberFormatException exc) {
             LOGGER.warn("Given value is not Text: {}", jsonValue);
             LOGGER.trace("", exc);
@@ -110,13 +188,13 @@ public class Time extends AbstractSimpleComponent {
     }
 
     public boolean valueIsValid() {
-        if (value == null) {
+        if (getValue() == null) {
             return false;
         }
-        if (constraint == null) {
+        if (getConstraint() == null) {
             return true;
         }
-        return constraint.isValid(value, uom);
+        return getConstraint().isValid(getValue(), getUom());
     }
 
 }

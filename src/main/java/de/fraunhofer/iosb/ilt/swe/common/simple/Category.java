@@ -27,12 +27,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import java.util.Map;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Category")
 public class Category extends AbstractSimpleComponent {
@@ -48,6 +50,39 @@ public class Category extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.value);
+        hash = 17 * hash + Objects.hashCode(this.constraint);
+        hash = 17 * hash + Objects.hashCode(this.codeSpace);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Category other = (Category) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        if (!Objects.equals(this.codeSpace, other.codeSpace)) {
+            return false;
+        }
+        return true;
+    }
+
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint", description = "A limited list of possible values.")
@@ -56,6 +91,14 @@ public class Category extends AbstractSimpleComponent {
 
     //TODO
     private Map<String, String> codeSpace;
+
+    public void setConstraint(AllowedTokens constraint) {
+        this.constraint = constraint;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public AllowedTokens getConstraint() {
         return constraint;
@@ -76,7 +119,7 @@ public class Category extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
             return;
         }
-        value = jsonValue.getAsJsonPrimitive().getAsString();
+        setValue(jsonValue.getAsJsonPrimitive().getAsString());
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
         valueEditorItem.editor.setValue(value);
@@ -91,5 +134,4 @@ public class Category extends AbstractSimpleComponent {
         }
         return constraint.isValid(value);
     }
-
 }

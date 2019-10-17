@@ -27,12 +27,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorLong;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import java.math.BigDecimal;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Count")
 public class Count extends AbstractSimpleComponent {
@@ -41,6 +43,35 @@ public class Count extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Count.class);
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.value);
+        hash = 79 * hash + Objects.hashCode(this.constraint);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Count other = (Count) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
 
     @ConfigurableField(editor = EditorLong.class, optional = true,
             profilesGui = MODE_VALUE,
@@ -74,7 +105,7 @@ public class Count extends AbstractSimpleComponent {
             return;
         }
         try {
-            value = jsonValue.getAsJsonPrimitive().getAsLong();
+            setValue((Long) jsonValue.getAsJsonPrimitive().getAsLong());
             EditorMap<?> editor = getConfigEditor(null, null);
             AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
             valueEditorItem.editor.setValue(value);
@@ -92,6 +123,14 @@ public class Count extends AbstractSimpleComponent {
             return true;
         }
         return constraint.isValid(new BigDecimal(value));
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+
+    public void setConstraint(AllowedValues constraint) {
+        this.constraint = constraint;
     }
 
 }

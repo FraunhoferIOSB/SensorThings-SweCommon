@@ -25,12 +25,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_VALUE;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Boolean")
 public class SweBoolean extends AbstractSimpleComponent {
@@ -46,9 +48,42 @@ public class SweBoolean extends AbstractSimpleComponent {
     @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_VALUE)
     private Boolean value;
 
+    public Boolean getValue() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SweBoolean other = (SweBoolean) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return true;
+    }
+
+    public void setValue(Boolean value) {
+        this.value = value;
+    }
+
     @Override
     public JsonElement getValueJson() {
-        return new JsonPrimitive(value);
+        return new JsonPrimitive(getValue());
     }
 
     @Override
@@ -57,10 +92,10 @@ public class SweBoolean extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
             return;
         }
-        value = jsonValue.getAsJsonPrimitive().getAsBoolean();
+        setValue((Boolean) jsonValue.getAsJsonPrimitive().getAsBoolean());
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-        valueEditorItem.editor.setValue(value);
+        valueEditorItem.editor.setValue(getValue());
     }
 
     @Override

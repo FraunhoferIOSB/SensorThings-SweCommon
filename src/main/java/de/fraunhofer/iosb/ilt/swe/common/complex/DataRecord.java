@@ -23,7 +23,9 @@ import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -39,19 +41,44 @@ public class DataRecord extends AbstractDataComponent {
             description = "The fields in this DataRecord.")
     @EditorList.EdOptsList(editor = EditorClass.class,
             profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorClass.EdOptsClass(clazz = Field.class)
-    private List<Field> fields;
+    @EditorClass.EdOptsClass(clazz = AbstractDataComponent.class)
+    private List<AbstractDataComponent> fields = new ArrayList<>();
 
-    public List<Field> getFields() {
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.fields);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DataRecord other = (DataRecord) obj;
+        if (!Objects.equals(this.fields, other.fields)) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<AbstractDataComponent> getFields() {
         return fields;
     }
 
     @Override
     public JsonElement getValueJson() {
         JsonObject object = new JsonObject();
-        for (Field item : fields) {
+        for (AbstractDataComponent item : fields) {
             String itemName = item.getName();
-            JsonElement itemValue = item.getField().getValueJson();
+            JsonElement itemValue = item.getValueJson();
             object.add(itemName, itemValue);
         }
         return object;
@@ -63,10 +90,10 @@ public class DataRecord extends AbstractDataComponent {
             return;
         }
         JsonObject asJsonObject = value.getAsJsonObject();
-        for (Field item : fields) {
+        for (AbstractDataComponent item : fields) {
             String itemName = item.getName();
             JsonElement itemValue = asJsonObject.get(itemName);
-            item.getField().setValueJson(itemValue);
+            item.setValueJson(itemValue);
         }
     }
 
@@ -75,7 +102,7 @@ public class DataRecord extends AbstractDataComponent {
         if (fields == null) {
             return true;
         }
-        for (Field field : fields) {
+        for (AbstractDataComponent field : fields) {
             if (!field.valueIsValid()) {
                 return false;
             }

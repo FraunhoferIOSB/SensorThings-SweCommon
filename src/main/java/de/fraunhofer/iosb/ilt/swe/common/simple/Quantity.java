@@ -28,12 +28,14 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import java.math.BigDecimal;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "Quantity")
 public class Quantity extends AbstractSimpleComponent {
@@ -42,6 +44,39 @@ public class Quantity extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Quantity.class);
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.value);
+        hash = 53 * hash + Objects.hashCode(this.constraint);
+        hash = 53 * hash + Objects.hashCode(this.uom);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Quantity other = (Quantity) obj;
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
 
     @ConfigurableField(editor = EditorBigDecimal.class, optional = true,
             profilesGui = MODE_VALUE,
@@ -62,6 +97,18 @@ public class Quantity extends AbstractSimpleComponent {
             label = "UoM", description = "The units of the value of this Quantity.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public void setConstraint(AllowedValues constraint) {
+        this.constraint = constraint;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
 
     public BigDecimal getValue() {
         return value;
@@ -87,7 +134,7 @@ public class Quantity extends AbstractSimpleComponent {
             return;
         }
         try {
-            value = jsonValue.getAsJsonPrimitive().getAsBigDecimal();
+            setValue(jsonValue.getAsJsonPrimitive().getAsBigDecimal());
             EditorMap<?> editor = getConfigEditor(null, null);
             AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
             valueEditorItem.editor.setValue(value);

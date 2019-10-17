@@ -33,12 +33,14 @@ import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
+ * @author Michael Jacoby
  */
 @ConfigurableClass(jsonName = "QuantityRange")
 public class QuantityRange extends AbstractSimpleComponent {
@@ -47,13 +49,11 @@ public class QuantityRange extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityRange.class);
-
     @ConfigurableField(editor = EditorString.class, optional = false,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Unit of Measure", description = "The units of the value of this Quantity.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
-
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The starting end ending values of this CategoryRange.")
@@ -62,7 +62,6 @@ public class QuantityRange extends AbstractSimpleComponent {
             minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
     @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
     private List<BigDecimal> value;
-
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
             label = "Constraint", description = "A limited list of possible values.")
@@ -70,9 +69,66 @@ public class QuantityRange extends AbstractSimpleComponent {
     private AllowedValues constraint;
 
     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.uom);
+        hash = 67 * hash + Objects.hashCode(this.value);
+        hash = 67 * hash + Objects.hashCode(this.constraint);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final QuantityRange other = (QuantityRange) obj;
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    public List<BigDecimal> getValue() {
+        return value;
+    }
+
+    public void setValue(List<BigDecimal> value) {
+        this.value = value;
+    }
+
+    public AllowedValues getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(AllowedValues constraint) {
+        this.constraint = constraint;
+    }
+
+    @Override
     public JsonElement getValueJson() {
-        JsonArray array = new JsonArray(value.size());
-        for (BigDecimal item : value) {
+        JsonArray array = new JsonArray(getValue().size());
+        for (BigDecimal item : getValue()) {
             array.add(new JsonPrimitive(item));
         }
         return array;
@@ -84,12 +140,12 @@ public class QuantityRange extends AbstractSimpleComponent {
             LOGGER.warn("Given value is not a JsonArray: {}", jsonValue);
             return;
         }
-        value.clear();
+        getValue().clear();
         JsonArray valueArray = jsonValue.getAsJsonArray();
         for (JsonElement item : valueArray) {
             try {
                 BigDecimal itemValue = item.getAsBigDecimal();
-                value.add(itemValue);
+                getValue().add(itemValue);
             } catch (NumberFormatException exc) {
                 LOGGER.warn("Given value is not a BigDecimal: {}", item);
                 LOGGER.trace("", exc);
@@ -97,17 +153,17 @@ public class QuantityRange extends AbstractSimpleComponent {
         }
         EditorMap<?> editor = getConfigEditor(null, null);
         AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-        valueEditorItem.editor.setValue(value);
+        valueEditorItem.editor.setValue(getValue());
     }
 
     public boolean valueIsValid() {
-        if (value == null) {
+        if (getValue() == null) {
             return false;
         }
-        if (constraint == null) {
+        if (getConstraint() == null) {
             return true;
         }
-        for (BigDecimal item : value) {
+        for (BigDecimal item : getValue()) {
             if (!constraint.isValid(item)) {
                 LOGGER.error("Item '{}' does not fit the constraint", item);
                 return false;
