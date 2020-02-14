@@ -32,12 +32,6 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
 
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
-            label = "Name", description = "A name describing this entity.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
-    private String name;
-
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
             label = "Definition", description = "A scoped name that maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String definition;
@@ -61,10 +55,10 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.name);
         hash = 29 * hash + Objects.hashCode(this.definition);
         hash = 29 * hash + (this.optional ? 1 : 0);
         hash = 29 * hash + (this.updatable ? 1 : 0);
+        hash = 29 * hash + super.hashCode();
         return hash;
     }
 
@@ -86,13 +80,10 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
         if (this.updatable != other.updatable) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
         if (!Objects.equals(this.definition, other.definition)) {
             return false;
         }
-        return true;
+        return super.equals(obj);
     }
 
     public Boolean isOptional() {
@@ -113,14 +104,6 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
      * @return true if the values are valid.
      */
     public abstract boolean valueIsValid();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public void setDefinition(String definition) {
         this.definition = definition;
