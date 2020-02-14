@@ -24,6 +24,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,6 +72,9 @@ public class DataRecord extends AbstractDataComponent {
     }
 
     public List<Field> getFields() {
+        if (fields == null) {
+            fields = new ArrayList<>();
+        }
         return fields;
     }
 

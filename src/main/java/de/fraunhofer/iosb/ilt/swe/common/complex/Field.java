@@ -25,6 +25,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorSubclass;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT_VALUE;
+import java.util.Objects;
 
 /**
  *
@@ -50,16 +51,59 @@ public class Field extends AbstractConfigurable<Void, Void> {
             nameField = "type")
     private AbstractDataComponent field;
 
+    public Field() {
+        // Empty constructor
+    }
+
+    public Field(String name, AbstractDataComponent field) {
+        this.name = name;
+        this.field = field;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public AbstractDataComponent getField() {
         return field;
     }
 
+    public void setField(AbstractDataComponent field) {
+        this.field = field;
+    }
+
     public boolean valueIsValid() {
         return field.valueIsValid();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Field other = (Field) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.field, other.field);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.name);
+        hash = 31 * hash + Objects.hashCode(this.field);
+        return hash;
     }
 
 }
