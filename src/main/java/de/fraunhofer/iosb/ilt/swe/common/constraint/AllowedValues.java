@@ -17,7 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorBigDecimal;
@@ -37,7 +36,7 @@ import java.util.Objects;
 @ConfigurableClass(
         jsonName = "AllowedValues",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedValues extends AbstractConfigurable<Void, Void> {
+public class AllowedValues extends AbstractConstraint {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,

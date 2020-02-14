@@ -17,7 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.Utils;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
@@ -38,7 +37,7 @@ import java.util.regex.Pattern;
 @ConfigurableClass(
         jsonName = "AllowedTokens",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTokens extends AbstractConfigurable<Void, Void> {
+public class AllowedTokens extends AbstractConstraint {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
