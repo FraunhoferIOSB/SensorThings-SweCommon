@@ -43,39 +43,6 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String label;
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.identifier);
-        hash = 67 * hash + Objects.hashCode(this.label);
-        hash = 67 * hash + Objects.hashCode(this.description);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractSWEIdentifiable other = (AbstractSWEIdentifiable) obj;
-        if (!Objects.equals(this.identifier, other.identifier)) {
-            return false;
-        }
-        if (!Objects.equals(this.label, other.label)) {
-            return false;
-        }
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
-        }
-        return true;
-    }
-
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Description", description = "A longer description.")
@@ -104,6 +71,36 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.identifier);
+        hash = 67 * hash + Objects.hashCode(this.label);
+        hash = 67 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractSWEIdentifiable other = (AbstractSWEIdentifiable) obj;
+        if (!Objects.equals(this.identifier, other.identifier)) {
+            return false;
+        }
+        if (!Objects.equals(this.label, other.label)) {
+            return false;
+        }
+        return Objects.equals(this.description, other.description);
     }
 
 }

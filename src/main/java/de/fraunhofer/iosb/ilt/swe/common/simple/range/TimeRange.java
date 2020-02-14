@@ -46,6 +46,7 @@ public class TimeRange extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeRange.class);
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Reference Time",
@@ -57,6 +58,7 @@ public class TimeRange extends AbstractSimpleComponent {
             + "calendar date/time combination.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String referenceTime;
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Local Frame",
@@ -67,46 +69,6 @@ public class TimeRange extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String localFrame;
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.referenceTime);
-        hash = 97 * hash + Objects.hashCode(this.localFrame);
-        hash = 97 * hash + Objects.hashCode(this.uom);
-        hash = 97 * hash + Objects.hashCode(this.constraint);
-        hash = 97 * hash + Objects.hashCode(this.value);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TimeRange other = (TimeRange) obj;
-        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
-            return false;
-        }
-        if (!Objects.equals(this.localFrame, other.localFrame)) {
-            return false;
-        }
-        if (!Objects.equals(this.uom, other.uom)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        return true;
-    }
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Unit of Measurement",
@@ -114,6 +76,7 @@ public class TimeRange extends AbstractSimpleComponent {
             + "expressed in a well defined scale. The only units allowed are obviously time units.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
+
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint",
@@ -121,6 +84,7 @@ public class TimeRange extends AbstractSimpleComponent {
             + "range of possible time values.")
     @EditorClass.EdOptsClass(clazz = AllowedTimes.class)
     private AllowedTimes constraint;
+
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The starting end ending values of this TimeRange.")
@@ -196,6 +160,7 @@ public class TimeRange extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(getValue());
     }
 
+    @Override
     public boolean valueIsValid() {
         if (getValue() == null) {
             return false;
@@ -212,4 +177,45 @@ public class TimeRange extends AbstractSimpleComponent {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.referenceTime);
+        hash = 97 * hash + Objects.hashCode(this.localFrame);
+        hash = 97 * hash + Objects.hashCode(this.uom);
+        hash = 97 * hash + Objects.hashCode(this.constraint);
+        hash = 97 * hash + Objects.hashCode(this.value);
+        hash = 97 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TimeRange other = (TimeRange) obj;
+        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.localFrame, other.localFrame)) {
+            return false;
+        }
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return super.equals(obj);
+    }
 }

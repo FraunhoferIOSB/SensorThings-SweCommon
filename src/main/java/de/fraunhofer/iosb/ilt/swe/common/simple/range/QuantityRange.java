@@ -49,11 +49,13 @@ public class QuantityRange extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(QuantityRange.class);
+
     @ConfigurableField(editor = EditorString.class, optional = false,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Unit of Measure", description = "The units of the value of this Quantity.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String uom;
+
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "The starting end ending values of this CategoryRange.")
@@ -62,6 +64,7 @@ public class QuantityRange extends AbstractSimpleComponent {
             minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
     @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
     private List<BigDecimal> value;
+
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
             label = "Constraint", description = "A limited list of possible values.")
@@ -74,6 +77,7 @@ public class QuantityRange extends AbstractSimpleComponent {
         hash = 67 * hash + Objects.hashCode(this.uom);
         hash = 67 * hash + Objects.hashCode(this.value);
         hash = 67 * hash + Objects.hashCode(this.constraint);
+        hash = 67 * hash + super.hashCode();
         return hash;
     }
 
@@ -97,8 +101,8 @@ public class QuantityRange extends AbstractSimpleComponent {
         }
         if (!Objects.equals(this.constraint, other.constraint)) {
             return false;
-        }
-        return true;
+    }
+        return super.equals(obj);
     }
 
     public String getUom() {
@@ -156,6 +160,7 @@ public class QuantityRange extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(getValue());
     }
 
+    @Override
     public boolean valueIsValid() {
         if (getValue() == null) {
             return false;

@@ -44,35 +44,6 @@ public class Count extends AbstractSimpleComponent {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Count.class);
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.value);
-        hash = 79 * hash + Objects.hashCode(this.constraint);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Count other = (Count) obj;
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        return true;
-    }
-
     @ConfigurableField(editor = EditorLong.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value", description = "an integer that must be within one of the constraint intervals or exactly one of the enumerated values.")
@@ -115,6 +86,7 @@ public class Count extends AbstractSimpleComponent {
         }
     }
 
+    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;
@@ -131,6 +103,36 @@ public class Count extends AbstractSimpleComponent {
 
     public void setConstraint(AllowedValues constraint) {
         this.constraint = constraint;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.value);
+        hash = 79 * hash + Objects.hashCode(this.constraint);
+        hash = 79 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Count other = (Count) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
 }

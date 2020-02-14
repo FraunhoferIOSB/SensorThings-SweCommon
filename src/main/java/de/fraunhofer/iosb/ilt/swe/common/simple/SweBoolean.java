@@ -56,6 +56,7 @@ public class SweBoolean extends AbstractSimpleComponent {
     public int hashCode() {
         int hash = 5;
         hash = 71 * hash + Objects.hashCode(this.value);
+        hash = 71 * hash + super.hashCode();
         return hash;
     }
 
@@ -74,7 +75,7 @@ public class SweBoolean extends AbstractSimpleComponent {
         if (!Objects.equals(this.value, other.value)) {
             return false;
         }
-        return true;
+        return super.equals(obj);
     }
 
     public void setValue(Boolean value) {

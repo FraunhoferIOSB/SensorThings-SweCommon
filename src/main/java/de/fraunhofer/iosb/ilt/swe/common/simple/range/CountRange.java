@@ -56,35 +56,6 @@ public class CountRange extends AbstractSimpleComponent {
     @EditorLong.EdOptsLong(dflt = 0)
     private List<Long> value;
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.value);
-        hash = 79 * hash + Objects.hashCode(this.constraint);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CountRange other = (CountRange) obj;
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        return true;
-    }
-
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,
             label = "Constraint", description = "A limited list of possible values.")
@@ -141,6 +112,7 @@ public class CountRange extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;
@@ -155,6 +127,36 @@ public class CountRange extends AbstractSimpleComponent {
             }
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.value);
+        hash = 79 * hash + Objects.hashCode(this.constraint);
+        hash = 79 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CountRange other = (CountRange) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
 }

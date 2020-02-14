@@ -42,6 +42,7 @@ public class Time extends AbstractSimpleComponent {
      * The logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Time.class);
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Reference Time",
@@ -54,46 +55,6 @@ public class Time extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String referenceTime;
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + Objects.hashCode(this.referenceTime);
-        hash = 19 * hash + Objects.hashCode(this.localFrame);
-        hash = 19 * hash + Objects.hashCode(this.uom);
-        hash = 19 * hash + Objects.hashCode(this.constraint);
-        hash = 19 * hash + Objects.hashCode(this.value);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Time other = (Time) obj;
-        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
-            return false;
-        }
-        if (!Objects.equals(this.localFrame, other.localFrame)) {
-            return false;
-        }
-        if (!Objects.equals(this.uom, other.uom)) {
-            return false;
-        }
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        return true;
-    }
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Local Frame",
@@ -103,6 +64,7 @@ public class Time extends AbstractSimpleComponent {
             + "reference to this frame.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String localFrame;
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_EXPERT,
             label = "Unit of Measurement",
@@ -110,6 +72,7 @@ public class Time extends AbstractSimpleComponent {
             + "expressed in a well defined scale. The only units allowed are obviously time units.")
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT, dflt = "http://www.opengis.net/def/uom/ISO‐8601/0/Gregorian")
     private String uom;
+
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint",
@@ -117,6 +80,7 @@ public class Time extends AbstractSimpleComponent {
             + "range of possible time values.")
     @EditorClass.EdOptsClass(clazz = AllowedTimes.class)
     private AllowedTimes constraint;
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_VALUE,
             label = "Value",
@@ -187,6 +151,7 @@ public class Time extends AbstractSimpleComponent {
         }
     }
 
+    @Override
     public boolean valueIsValid() {
         if (getValue() == null) {
             return false;
@@ -195,6 +160,48 @@ public class Time extends AbstractSimpleComponent {
             return true;
         }
         return getConstraint().isValid(getValue(), getUom());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.referenceTime);
+        hash = 19 * hash + Objects.hashCode(this.localFrame);
+        hash = 19 * hash + Objects.hashCode(this.uom);
+        hash = 19 * hash + Objects.hashCode(this.constraint);
+        hash = 19 * hash + Objects.hashCode(this.value);
+        hash = 19 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Time other = (Time) obj;
+        if (!Objects.equals(this.referenceTime, other.referenceTime)) {
+            return false;
+        }
+        if (!Objects.equals(this.localFrame, other.localFrame)) {
+            return false;
+        }
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
 }

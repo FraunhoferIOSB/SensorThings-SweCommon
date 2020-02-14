@@ -50,39 +50,6 @@ public class Category extends AbstractSimpleComponent {
     @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.value);
-        hash = 17 * hash + Objects.hashCode(this.constraint);
-        hash = 17 * hash + Objects.hashCode(this.codeSpace);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Category other = (Category) obj;
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        if (!Objects.equals(this.codeSpace, other.codeSpace)) {
-            return false;
-        }
-        return true;
-    }
-
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Constraint", description = "A limited list of possible values.")
@@ -125,6 +92,7 @@ public class Category extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;
@@ -133,5 +101,39 @@ public class Category extends AbstractSimpleComponent {
             return true;
         }
         return constraint.isValid(value);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.value);
+        hash = 17 * hash + Objects.hashCode(this.constraint);
+        hash = 17 * hash + Objects.hashCode(this.codeSpace);
+        hash = 17 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Category other = (Category) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        if (!Objects.equals(this.codeSpace, other.codeSpace)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 }

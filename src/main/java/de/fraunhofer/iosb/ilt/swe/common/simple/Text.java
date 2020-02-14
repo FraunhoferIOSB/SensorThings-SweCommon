@@ -64,6 +64,7 @@ public class Text extends AbstractSimpleComponent {
         int hash = 7;
         hash = 59 * hash + Objects.hashCode(this.value);
         hash = 59 * hash + Objects.hashCode(this.constraint);
+        hash = 59 * hash + super.hashCode();
         return hash;
     }
 
@@ -85,7 +86,7 @@ public class Text extends AbstractSimpleComponent {
         if (!Objects.equals(this.constraint, other.constraint)) {
             return false;
         }
-        return true;
+        return super.equals(obj);
     }
 
     public void setConstraint(AllowedTokens constraint) {
@@ -117,6 +118,7 @@ public class Text extends AbstractSimpleComponent {
         valueEditorItem.editor.setValue(value);
     }
 
+    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;

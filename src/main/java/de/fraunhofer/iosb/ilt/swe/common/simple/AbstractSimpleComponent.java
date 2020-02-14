@@ -24,6 +24,7 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import de.fraunhofer.iosb.ilt.swe.common.util.NillValue;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -76,6 +77,44 @@ public abstract class AbstractSimpleComponent extends AbstractDataComponent {
 
     public void setNilValues(List<NillValue> nilValues) {
         this.nilValues = nilValues;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.axisID);
+        hash = 47 * hash + Objects.hashCode(this.referenceFrame);
+        hash = 47 * hash + Objects.hashCode(this.nilValues);
+        hash = 47 * hash + Objects.hashCode(this.quality);
+        hash = 47 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractSimpleComponent other = (AbstractSimpleComponent) obj;
+        if (!Objects.equals(this.axisID, other.axisID)) {
+            return false;
+        }
+        if (!Objects.equals(this.referenceFrame, other.referenceFrame)) {
+            return false;
+        }
+        if (!Objects.equals(this.nilValues, other.nilValues)) {
+            return false;
+        }
+        if (!Objects.equals(this.quality, other.quality)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
 }

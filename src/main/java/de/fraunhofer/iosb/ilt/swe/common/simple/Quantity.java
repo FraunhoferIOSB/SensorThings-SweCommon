@@ -45,38 +45,6 @@ public class Quantity extends AbstractSimpleComponent {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(Quantity.class);
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.value);
-        hash = 53 * hash + Objects.hashCode(this.constraint);
-        hash = 53 * hash + Objects.hashCode(this.uom);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Quantity other = (Quantity) obj;
-        if (!Objects.equals(this.uom, other.uom)) {
-            return false;
-        }
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (!Objects.equals(this.constraint, other.constraint)) {
-            return false;
-        }
-        return true;
-    }
 
     @ConfigurableField(editor = EditorBigDecimal.class, optional = true,
             profilesGui = MODE_VALUE,
@@ -144,6 +112,7 @@ public class Quantity extends AbstractSimpleComponent {
         }
     }
 
+    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;
@@ -152,6 +121,39 @@ public class Quantity extends AbstractSimpleComponent {
             return true;
         }
         return constraint.isValid(value);
+    }
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.value);
+        hash = 53 * hash + Objects.hashCode(this.constraint);
+        hash = 53 * hash + Objects.hashCode(this.uom);
+        hash = 53 * hash + super.hashCode();
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Quantity other = (Quantity) obj;
+        if (!Objects.equals(this.uom, other.uom)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.constraint, other.constraint)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
 }
