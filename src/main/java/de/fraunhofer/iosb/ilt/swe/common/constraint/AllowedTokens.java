@@ -17,13 +17,13 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import com.google.common.base.Strings;
+import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
+import de.fraunhofer.iosb.ilt.configurable.Utils;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
-import de.fraunhofer.iosb.ilt.swe.common.AbstractSWEIdentifiable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 @ConfigurableClass(
         jsonName = "AllowedTokens",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTokens extends AbstractSWEIdentifiable {
+public class AllowedTokens extends AbstractConfigurable<Void, Void> {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
@@ -47,6 +47,7 @@ public class AllowedTokens extends AbstractSWEIdentifiable {
             profilesEdit = MODE_SIMPLE_EXPERT)
     @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private List<String> value;
+
     @ConfigurableField(editor = EditorString.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Pattern", description = "The regex(?) pattern that the value must match.")
@@ -110,7 +111,7 @@ public class AllowedTokens extends AbstractSWEIdentifiable {
                 }
             }
         }
-        if (!Strings.isNullOrEmpty(pattern)) {
+        if (!Utils.isNullOrEmpty(pattern)) {
             Pattern compiled = Pattern.compile(pattern);
             if (compiled.matcher(input).matches()) {
                 return true;

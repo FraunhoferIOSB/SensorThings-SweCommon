@@ -17,13 +17,13 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
+import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
 import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorInt;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
-import de.fraunhofer.iosb.ilt.swe.common.AbstractSWEIdentifiable;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ import java.util.Objects;
 @ConfigurableClass(
         jsonName = "AllowedTimes",
         profilesEdit = MODE_SIMPLE_EXPERT)
-public class AllowedTimes extends AbstractSWEIdentifiable {
+public class AllowedTimes extends AbstractConfigurable<Void, Void> {
 
     @ConfigurableField(editor = EditorList.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
