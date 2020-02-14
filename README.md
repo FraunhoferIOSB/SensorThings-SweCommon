@@ -5,13 +5,12 @@ It also has a GUI built-in to create valid json for both `TaskingProfile/tasking
 
 ## Download
 
-A pre-compiled jar can be found in our BinTray repository: [SensorThings-SWE-Common-0.2-jar-with-dependencies.jar](https://bintray.com/fraunhoferiosb/Maven/download_file?file_path=de%2Ffraunhofer%2Fiosb%2Filt%2FSensorThings-SWE-Common%2F0.2%2FSensorThings-SWE-Common-0.2-jar-with-dependencies.jar)
+A pre-compiled jar can be found in our BinTray repository: [SensorThings-SWE-Common-0.3.jar](https://bintray.com/fraunhoferiosb/Maven/download_file?file_path=de%2Ffraunhofer%2Fiosb%2Filt%2FSensorThings-SWE-Common%2F0.3%2FSensorThings-SWE-Common-0.3.jar)
 Download and double-click.
 
 ## Build
 ```
 mvn install
-java -jar target/SensorThings-SWE-Common-0.2-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ## Using with maven
@@ -21,7 +20,7 @@ Add the dependency:
 <dependency>
     <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 </dependency>
 
 ```
@@ -43,7 +42,7 @@ If you do not yet have the FraunhoferIOSB bintray repository, add:
 
 Add the dependency:
 ```gradle
-compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.2'
+compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.3'
 ```
 
 If you do not yet have the FraunhoferIOSB bintray repository, add:
