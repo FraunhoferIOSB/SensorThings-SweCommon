@@ -18,37 +18,31 @@
 package de.fraunhofer.iosb.ilt.swe.common.example;
 
 import com.google.gson.JsonElement;
-import de.fraunhofer.iosb.ilt.configurable.ConfigEditor;
-import de.fraunhofer.iosb.ilt.configurable.Configurable;
+import de.fraunhofer.iosb.ilt.configurable.AnnotatedConfigurable;
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
+import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorSubclass;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
-import de.fraunhofer.iosb.ilt.swe.common.AbstractSWE;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
+import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT_VALUE;
 
 /**
  * @author scf
  */
-public class TaskingCapability implements Configurable<Void, Void> {
+@ConfigurableClass()
+public class TaskingCapability implements AnnotatedConfigurable<Void, Void> {
 
+    @ConfigurableField(
+            editor = EditorSubclass.class,
+            label = "taskingParameters",
+            description = "The parameters for this taskingCapability",
+            profilesGui = MODE_SIMPLE_EXPERT_VALUE)
+    @EditorSubclass.EdOptsSubclass(
+            iface = AbstractDataComponent.class,
+            merge = true,
+            nameField = "type",
+            profilesEdit = MODE_SIMPLE_EXPERT)
     private AbstractDataComponent component;
-
-    private EditorSubclass<Void, Void, AbstractDataComponent> configEditor;
-
-    @Override
-    public void configure(JsonElement config, Void context, Void edtCtx) {
-        getConfigEditor(context, edtCtx).setConfig(config);
-        component = configEditor.getValue();
-    }
-
-    @Override
-    public ConfigEditor<?> getConfigEditor(Void context, Void edtCtx) {
-        if (configEditor == null) {
-            configEditor = new EditorSubclass(context, edtCtx, AbstractDataComponent.class, "taskingParameters", "The parameters for this taskingCapability");
-            configEditor.setProfilesEdit(AbstractSWE.MODE_SIMPLE + "," + AbstractSWE.MODE_EXPERT);
-            configEditor.setMerge(true);
-            configEditor.setNameField("type");
-        }
-        return configEditor;
-    }
 
     public JsonElement getValueJson() {
         return component.getValueJson();

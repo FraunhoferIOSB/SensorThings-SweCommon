@@ -21,6 +21,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import de.fraunhofer.iosb.ilt.configurable.ConfigEditor;
+import de.fraunhofer.iosb.ilt.configurable.ConfigEditors;
+import de.fraunhofer.iosb.ilt.configurable.ConfigurationException;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractSWE;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
@@ -46,16 +48,15 @@ public class ExampleGui extends javax.swing.JFrame {
     }
 
     private void addEditorToGui() {
-        TaskingCapability taskingCapability = new TaskingCapability();
-        editorStructure = taskingCapability.getConfigEditor(null, null);
+        editorStructure = ConfigEditors.buildEditorFromClass(TaskingCapability.class, null, null).get();
         toggledMode();
         panelEditor.add(editorStructure.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
     }
 
-    private void useConfig() {
+    private void useConfig() throws ConfigurationException {
         JsonElement config = editorStructure.getConfig();
         TaskingCapability taskingCapability = new TaskingCapability();
-        taskingCapability.configure(config, null, null);
+        taskingCapability.configure(config, null, null, null);
     }
 
     private void printConfig() {
@@ -71,7 +72,7 @@ public class ExampleGui extends javax.swing.JFrame {
     }
 
     public void loadConfig(String jsonString) {
-        JsonElement config = new JsonParser().parse(jsonString);
+        JsonElement config = JsonParser.parseString(jsonString);
         editorStructure.setConfig(config);
     }
 
@@ -87,8 +88,7 @@ public class ExampleGui extends javax.swing.JFrame {
 
     public void copyEditorToValuesEditor() {
         JsonElement config = editorStructure.getConfig();
-        TaskingCapability taskingCapability = new TaskingCapability();
-        editorValues = taskingCapability.getConfigEditor(null, null);
+        editorValues = ConfigEditors.buildEditorFromClass(TaskingCapability.class, null, null).get();
         editorValues.setProfile(AbstractSWE.MODE_VALUE);
         editorValues.setConfig(config);
         panelValueEditor.removeAll();
@@ -96,48 +96,60 @@ public class ExampleGui extends javax.swing.JFrame {
     }
 
     public void printValues() {
-        if (editorValues == null) {
-            return;
+        try {
+            if (editorValues == null) {
+                return;
+            }
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement config = editorValues.getConfig();
+
+            TaskingCapability taskingCapability = new TaskingCapability();
+            taskingCapability.configure(config, null, null, null);
+            JsonElement valueJson = taskingCapability.getValueJson();
+
+            String jsonString = gson.toJson(valueJson);
+            jsonValueTextArea.setText(jsonString);
+        } catch (ConfigurationException ex) {
+            LOGGER.error("Configuration not valid for printing.");
         }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement config = editorValues.getConfig();
-
-        TaskingCapability taskingCapability = new TaskingCapability();
-        taskingCapability.configure(config, null, null);
-        JsonElement valueJson = taskingCapability.getValueJson();
-
-        String jsonString = gson.toJson(valueJson);
-        jsonValueTextArea.setText(jsonString);
     }
 
     public void loadValues() {
-        if (editorValues == null) {
-            return;
+        try {
+            if (editorValues == null) {
+                return;
+            }
+            JsonElement config = editorValues.getConfig();
+
+            TaskingCapability taskingCapability = new TaskingCapability();
+            taskingCapability.configure(config, null, null, null);
+            JsonElement valueJson = JsonParser.parseString(jsonValueTextArea.getText());
+
+            editorValues = ConfigEditors.buildEditorFromClass(TaskingCapability.class, null, null).get();
+            editorValues.setProfile(AbstractSWE.MODE_VALUE);
+            panelValueEditor.removeAll();
+            panelValueEditor.add(editorValues.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
+            taskingCapability.setValueJson(valueJson);
+        } catch (ConfigurationException ex) {
+            LOGGER.error("Configuration not valid for loading.");
         }
-        JsonElement config = editorValues.getConfig();
-
-        TaskingCapability taskingCapability = new TaskingCapability();
-        taskingCapability.configure(config, null, null);
-        JsonElement valueJson = new JsonParser().parse(jsonValueTextArea.getText());
-
-        editorValues = taskingCapability.getConfigEditor(null, null);
-        editorValues.setProfile(AbstractSWE.MODE_VALUE);
-        panelValueEditor.removeAll();
-        panelValueEditor.add(editorValues.getGuiFactorySwing().getComponent(), BorderLayout.NORTH);
-        taskingCapability.setValueJson(valueJson);
     }
 
     public void validateValues() {
-        if (editorValues == null) {
-            return;
-        }
-        JsonElement config = editorValues.getConfig();
-        TaskingCapability taskingCapability = new TaskingCapability();
-        taskingCapability.configure(config, null, null);
-        if (taskingCapability.valueIsValid()) {
-            JOptionPane.showMessageDialog(this, "Everything checks out.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Something is wrong.");
+        try {
+            if (editorValues == null) {
+                return;
+            }
+            JsonElement config = editorValues.getConfig();
+            TaskingCapability taskingCapability = new TaskingCapability();
+            taskingCapability.configure(config, null, null, null);
+            if (taskingCapability.valueIsValid()) {
+                JOptionPane.showMessageDialog(this, "Everything checks out.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Something is wrong.");
+            }
+        } catch (ConfigurationException ex) {
+            LOGGER.error("Configuration not valid for validation.");
         }
     }
 
