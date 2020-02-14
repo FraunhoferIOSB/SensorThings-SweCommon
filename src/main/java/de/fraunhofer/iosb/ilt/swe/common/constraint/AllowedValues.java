@@ -63,7 +63,7 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
     @ConfigurableField(editor = EditorInt.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,
             label = "Significant Figures", description = "The number of significant figures.")
-    @EditorInt.EdOptsInt(min = 0, max = 100, step = 1, dflt = 1)
+    @EditorInt.EdOptsInt(min = 0, max = 100, step = 1, dflt = 0)
     private Integer significantFigures;
 
     public List<BigDecimal> getValue() {
@@ -79,6 +79,10 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
     }
 
     public boolean isValid(BigDecimal input) {
+        if (Utils.isNullOrEmpty(value) && Utils.isNullOrEmpty(interval) && significantFigures == 0) {
+            // This constraint is empty
+            return true;
+        }
         if (value != null) {
             for (BigDecimal item : value) {
                 if (item.compareTo(input) == 0) {
@@ -93,7 +97,7 @@ public class AllowedValues extends AbstractConfigurable<Void, Void> {
                 }
             }
         }
-
+        // TODO: validate significantFigues
         return false;
     }
 
