@@ -5,7 +5,8 @@ It also has a GUI built-in to create valid json for both `TaskingProfile/tasking
 
 ## Download
 
-A pre-compiled jar can be found in our BinTray repository: [SensorThings-SWE-Common-0.3.jar](https://bintray.com/fraunhoferiosb/Maven/download_file?file_path=de%2Ffraunhofer%2Fiosb%2Filt%2FSensorThings-SWE-Common%2F0.3%2FSensorThings-SWE-Common-0.3.jar)
+A pre-compiled jar can be found in our BinTray repository:
+[SensorThings-SWE-Common-0.4.jar](https://bintray.com/fraunhoferiosb/Maven/download_file?file_path=de%2Ffraunhofer%2Fiosb%2Filt%2FSensorThings-SWE-Common%2F0.4%2FSensorThings-SWE-Common-0.4.jar)
 Download and double-click.
 
 ## Build
