@@ -21,7 +21,7 @@ Add the dependency:
 <dependency>
     <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 </dependency>
 
 ```
