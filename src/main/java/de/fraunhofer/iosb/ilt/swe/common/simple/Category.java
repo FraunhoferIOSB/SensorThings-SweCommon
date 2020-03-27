@@ -48,7 +48,7 @@ public class Category extends AbstractSimpleComponent {
             profilesGui = MODE_VALUE,
             label = "Value", description = "The value of this Category.")
     @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
-    private String value;
+    private String value = "";
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE_EXPERT,

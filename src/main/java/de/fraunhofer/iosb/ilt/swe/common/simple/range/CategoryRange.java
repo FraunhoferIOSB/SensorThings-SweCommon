@@ -29,6 +29,8 @@ import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
 import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -55,7 +57,7 @@ public class CategoryRange extends AbstractSimpleComponent {
             profilesEdit = MODE_SIMPLE_EXPERT,
             minCount = 2, maxCount = 2, horizontal = true, labelText = "Range:")
     @EditorString.EdOptsString
-    private List<String> value;
+    private List<String> value = new ArrayList<>();
 
     @ConfigurableField(editor = EditorClass.class, optional = true,
             profilesGui = MODE_SIMPLE + "," + MODE_EXPERT,

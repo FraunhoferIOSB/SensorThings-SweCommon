@@ -78,6 +78,17 @@ public class DataRecord extends AbstractDataComponent {
         return fields;
     }
 
+    public java.util.Optional<Field> getFieldByName(String name) {
+        return getFields().stream().filter(f -> f.getName().equals(name)).findFirst();
+    }
+
+    public void addDataComponent(String name, AbstractDataComponent field){
+        if(getFieldByName(name).isPresent()) {
+            throw new IllegalArgumentException("Field with name " + name + " is already present");
+        }
+        getFields().add(new Field(name, field));
+    }
+
     @Override
     public JsonElement getValueJson() {
         JsonObject object = new JsonObject();
