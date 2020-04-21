@@ -21,7 +21,7 @@ Add the dependency:
 <dependency>
     <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
 </dependency>
 
 ```
@@ -43,7 +43,7 @@ If you do not yet have the FraunhoferIOSB bintray repository, add:
 
 Add the dependency:
 ```gradle
-compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.3'
+compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.5'
 ```
 
 If you do not yet have the FraunhoferIOSB bintray repository, add:
