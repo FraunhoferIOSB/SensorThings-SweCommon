@@ -5,8 +5,8 @@ It also has a GUI built-in to create valid json for both `TaskingProfile/tasking
 
 ## Download
 
-A pre-compiled jar can be found in our BinTray repository:
-[SensorThings-SWE-Common-0.4.jar](https://bintray.com/fraunhoferiosb/Maven/download_file?file_path=de%2Ffraunhofer%2Fiosb%2Filt%2FSensorThings-SWE-Common%2F0.4%2FSensorThings-SWE-Common-0.4.jar)
+A pre-compiled jar can be found in Maven Central:
+[SensorThings-SWE-Common-0.6.jar](https://repo1.maven.org/maven2/de/fraunhofer/iosb/ilt/SensorThings-SWE-Common/0.6/SensorThings-SWE-Common-0.6.jar)
 Download and double-click.
 
 ## Build
@@ -21,22 +21,9 @@ Add the dependency:
 <dependency>
     <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
 </dependency>
 
-```
-
-If you do not yet have the FraunhoferIOSB bintray repository, add:
-```xml
-<repositories>
-    <repository>
-        <id>bintray-fraunhoferiosb-Maven</id>
-        <url>https://dl.bintray.com/fraunhoferiosb/Maven</url>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-    </repository>
-</repositories>
 ```
 
 ## Using with gradle
@@ -44,13 +31,4 @@ If you do not yet have the FraunhoferIOSB bintray repository, add:
 Add the dependency:
 ```gradle
 compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.5'
-```
-
-If you do not yet have the FraunhoferIOSB bintray repository, add:
-```gradle
-repositories {
-    maven {
-        url  "https://dl.bintray.com/fraunhoferiosb/Maven"
-    }
-}
 ```
