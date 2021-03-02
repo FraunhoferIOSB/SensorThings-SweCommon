@@ -1,4 +1,4 @@
-# SensorThings-SweCommon
+# SensorThings-SweCommon  [![Build Status](https://github.com/FraunhoferIOSB/SensorThings-SweCommon/workflows/Maven%20Build/badge.svg)](https://github.com/FraunhoferIOSB/SensorThings-SweCommon/actions)
 
 A set of classes for dealing with the SWE-Common encoded parts of the SensorThings API, such as `TaskingProfile/taskingParameters` and `Task/taskingParameters`.
 It also has a GUI built-in to create valid json for both `TaskingProfile/taskingParameters` and `Task/taskingParameters`.
