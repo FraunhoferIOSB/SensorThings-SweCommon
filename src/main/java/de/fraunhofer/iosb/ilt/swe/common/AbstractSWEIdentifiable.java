@@ -17,10 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common;
 
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import java.util.Objects;
 
 /**
@@ -28,49 +24,64 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-@ConfigurableClass(profilesEdit = MODE_SIMPLE_EXPERT)
 public abstract class AbstractSWEIdentifiable extends AbstractSWE {
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Identifier", description = "A unique identifier.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Identifier
+     *
+     * A unique identifier.
+     */
     private String identifier;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
-            label = "Label", description = "A short descriptive name.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Label
+     *
+     * A short descriptive name.
+     */
     private String label;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Description", description = "A longer description.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Description
+     *
+     * A longer description.
+     */
     private String description;
 
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public String getLabel() {
-        return label;
-    }
+    /**
+     * The type of the component.
+     */
+    private String type;
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public void setLabel(String label) {
         this.label = label;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

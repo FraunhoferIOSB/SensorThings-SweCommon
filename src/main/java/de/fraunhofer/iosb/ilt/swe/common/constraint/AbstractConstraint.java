@@ -17,12 +17,23 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
-
 /**
  *
  * @author scf
  */
-public abstract class AbstractConstraint extends AbstractConfigurable<Void, Void> {
-    // Nothing so far.
+public abstract class AbstractConstraint {
+
+    /**
+     * the type of the constraint.
+     */
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

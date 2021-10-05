@@ -17,12 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.Utils;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,23 +28,20 @@ import java.util.regex.Pattern;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-@ConfigurableClass(
-        jsonName = "AllowedTokens",
-        profilesEdit = MODE_SIMPLE_EXPERT)
 public class AllowedTokens extends AbstractConstraint {
 
-    @ConfigurableField(editor = EditorList.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Value", description = "The values that the user can choose from.")
-    @EditorList.EdOptsList(editor = EditorString.class,
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Value
+     *
+     * The values that the user can choose from.
+     */
     private List<String> value;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Pattern", description = "The regex(?) pattern that the value must match.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Pattern
+     *
+     * The regex(?) pattern that the value must match.
+     */
     private String pattern;
 
     public AllowedTokens() {
@@ -110,7 +101,7 @@ public class AllowedTokens extends AbstractConstraint {
                 }
             }
         }
-        if (!Utils.isNullOrEmpty(pattern)) {
+        if (pattern != null && !pattern.isEmpty()) {
             Pattern compiled = Pattern.compile(pattern);
             if (compiled.matcher(input).matches()) {
                 return true;

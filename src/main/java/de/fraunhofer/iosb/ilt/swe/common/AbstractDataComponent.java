@@ -17,10 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common;
 
-import com.google.gson.JsonElement;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorBoolean;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import java.util.Objects;
 
 /**
@@ -30,22 +26,33 @@ import java.util.Objects;
  */
 public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Definition", description = "A scoped name that maps to a controlled term defined in a (web accessible) dictionary, registry or ontology.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * name
+     *
+     * The name of the component when used as a field in a DataRecord.
+     */
+    private String name;
+
+    /**
+     * Definition
+     *
+     * A scoped name that maps to a controlled term defined in a (web
+     * accessible) dictionary, registry or ontology.
+     */
     private String definition;
 
-    @ConfigurableField(editor = EditorBoolean.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Optional", description = "A flag indicating if the component value can be omitted.")
-    @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Optional
+     *
+     * A flag indicating if the component value can be omitted.
+     */
     private boolean optional;
 
-    @ConfigurableField(editor = EditorBoolean.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Updatable", description = "A flag indicating if the component value is fixed or can be updated.")
-    @EditorBoolean.EdOptsBool(dflt = false, profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Updatable
+     *
+     * A flag indicating if the component value is fixed or can be updated.
+     */
     private boolean updatable;
 
     public String getDefinition() {
@@ -86,6 +93,14 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
         return super.equals(obj);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Boolean isOptional() {
         return optional;
     }
@@ -93,10 +108,6 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
     public Boolean isUpdatable() {
         return updatable;
     }
-
-    public abstract JsonElement getValueJson();
-
-    public abstract void setValueJson(JsonElement value);
 
     /**
      * Checks if any set values are valid for any set constraints.

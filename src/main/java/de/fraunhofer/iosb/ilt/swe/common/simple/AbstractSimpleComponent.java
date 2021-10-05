@@ -17,10 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import de.fraunhofer.iosb.ilt.swe.common.util.NillValue;
 import java.util.List;
@@ -32,24 +28,27 @@ import java.util.Objects;
  */
 public abstract class AbstractSimpleComponent extends AbstractDataComponent {
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Axis ID", description = "A string that uniquely identifies one of the reference frame’s axes along which the coordinate value is given.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Axis ID
+     *
+     * A string that uniquely identifies one of the reference frame’s axes along
+     * which the coordinate value is given.
+     */
     private String axisID;
 
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_EXPERT,
-            label = "Reference Frame", description = "The reference frame relative to which the coordinate value is given. Commonly an EPSG identifier.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * Reference Frame
+     *
+     * The reference frame relative to which the coordinate value is given.
+     * Commonly an EPSG identifier.
+     */
     private String referenceFrame;
 
-    @ConfigurableField(editor = EditorList.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "NilValues", description = "a list (i.e. one or more) of NIL values.")
-    @EditorList.EdOptsList(editor = EditorClass.class,
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorClass.EdOptsClass(clazz = NillValue.class)
+    /**
+     * NilValues
+     *
+     * a list (i.e. one or more) of NIL values.
+     */
     private List<NillValue> nilValues;
 
     // TODO

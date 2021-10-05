@@ -17,42 +17,28 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import java.util.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-@ConfigurableClass(jsonName = "Text")
 public class Text extends AbstractSimpleComponent {
 
     /**
-     * The logger for this class.
+     * Value
+     *
+     * The value of this field.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Text.class);
-
-    @ConfigurableField(editor = EditorString.class, optional = true,
-            profilesGui = MODE_VALUE,
-            label = "Value", description = "The value of this field.")
-    @EditorString.EdOptsString(profilesEdit = MODE_VALUE)
     private String value;
 
-    @ConfigurableField(editor = EditorClass.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Constraint", description = "The constraints put on the value of this component.")
-    @EditorClass.EdOptsClass(clazz = AllowedTokens.class)
+    /**
+     * Constraint
+     *
+     * The constraints put on the value of this component.
+     */
     private AllowedTokens constraint;
 
     public void setValue(String value) {
@@ -99,23 +85,6 @@ public class Text extends AbstractSimpleComponent {
 
     public AllowedTokens getConstraint() {
         return constraint;
-    }
-
-    @Override
-    public JsonElement getValueJson() {
-        return new JsonPrimitive(value);
-    }
-
-    @Override
-    public void setValueJson(JsonElement jsonValue) {
-        if (!jsonValue.isJsonPrimitive()) {
-            LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
-            return;
-        }
-        setValue(jsonValue.getAsJsonPrimitive().getAsString());
-        EditorMap<?> editor = getConfigEditor(null, null);
-        AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-        valueEditorItem.editor.setValue(value);
     }
 
     @Override

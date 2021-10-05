@@ -16,34 +16,14 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.util;
 
-import de.fraunhofer.iosb.ilt.configurable.AbstractConfigurable;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
-
 /**
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(profilesEdit = MODE_SIMPLE_EXPERT)
-public class NillValue extends AbstractConfigurable<Void, Void> {
+public class NillValue {
 
-    @ConfigurableField(editor = EditorString.class, optional = false,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Reason", description = "The reason why a measurement value is not available. "
-            + "It is a resolvable reference to a controlled term that provides the formal"
-            + " textual definition of this reason (usually agreed upon by one or more communities).")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String reason;
 
-    @ConfigurableField(editor = EditorString.class, optional = false,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Value", description = "the data value that would be found in the\n"
-            + "stream to indicate that a measurement value is missing for the corresponding reason. The\n"
-            + "range of values allowed here is the range of values allowed by the datatype of the parent\n"
-            + "data component.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
     private String value;
 
     public String getReason() {

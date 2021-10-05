@@ -17,53 +17,38 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.AbstractEditorMap;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorBigDecimal;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorMap;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorString;
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
 import java.math.BigDecimal;
 import java.util.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-@ConfigurableClass(jsonName = "Quantity")
 public class Quantity extends AbstractSimpleComponent {
 
     /**
-     * The logger for this class.
+     * Value
+     *
+     * A real value that is within one of the constraint intervals or exactly
+     * one of the enumerated values, and most importantly is expressed in the
+     * unit specified.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Quantity.class);
-
-
-    @ConfigurableField(editor = EditorBigDecimal.class, optional = true,
-            profilesGui = MODE_VALUE,
-            label = "Value", description = "a real value that is within one of "
-            + "the constraint intervals or exactly one of the enumerated values,"
-            + " and most importantly is expressed in the unit specified.")
-    @EditorBigDecimal.EdOptsBigDecimal(dflt = 0, profilesEdit = MODE_VALUE)
     private BigDecimal value;
 
-    @ConfigurableField(editor = EditorClass.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Constraint", description = "A limited list of possible values.")
-    @EditorClass.EdOptsClass(clazz = AllowedValues.class)
+    /**
+     * Constraint
+     *
+     * A limited list of possible values.
+     */
     private AllowedValues constraint;
 
-    @ConfigurableField(editor = EditorString.class, optional = false,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "UoM", description = "The units of the value of this Quantity.")
-    @EditorString.EdOptsString(profilesEdit = MODE_SIMPLE_EXPERT)
+    /**
+     * UoM
+     *
+     * The units of the value of this Quantity.
+     */
     private String uom;
 
     public void setValue(BigDecimal value) {
@@ -91,28 +76,6 @@ public class Quantity extends AbstractSimpleComponent {
     }
 
     @Override
-    public JsonElement getValueJson() {
-        return new JsonPrimitive(value);
-    }
-
-    @Override
-    public void setValueJson(JsonElement jsonValue) {
-        if (!jsonValue.isJsonPrimitive()) {
-            LOGGER.warn("Given value is not a JsonPrimitive: {}", jsonValue);
-            return;
-        }
-        try {
-            setValue(jsonValue.getAsJsonPrimitive().getAsBigDecimal());
-            EditorMap<?> editor = getConfigEditor(null, null);
-            AbstractEditorMap.Item valueEditorItem = editor.getOptions().get("value");
-            valueEditorItem.editor.setValue(value);
-        } catch (NumberFormatException exc) {
-            LOGGER.warn("Given value is not a BigDecimal: {}", jsonValue);
-            LOGGER.trace("", exc);
-        }
-    }
-
-    @Override
     public boolean valueIsValid() {
         if (value == null) {
             return false;
@@ -122,6 +85,7 @@ public class Quantity extends AbstractSimpleComponent {
         }
         return constraint.isValid(value);
     }
+
     @Override
     public int hashCode() {
         int hash = 3;

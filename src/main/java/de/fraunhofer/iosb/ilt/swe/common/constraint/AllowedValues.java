@@ -17,12 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorBigDecimal;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorInt;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import de.fraunhofer.iosb.ilt.swe.common.Utils;
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,36 +27,27 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-@ConfigurableClass(
-        jsonName = "AllowedValues",
-        profilesEdit = MODE_SIMPLE_EXPERT)
 public class AllowedValues extends AbstractConstraint {
 
-    @ConfigurableField(editor = EditorList.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Values", description = "The values that the user can choose from.")
-    @EditorList.EdOptsList(editor = EditorBigDecimal.class,
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
+    /**
+     * Values
+     *
+     * The values that the user can choose from.
+     */
     private List<BigDecimal> value;
 
-    @ConfigurableField(editor = EditorList.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Intervals", description = "The intervals that the value must fall in.")
-    @EditorList.EdOptsList(editor = EditorList.class,
-            editorKey = "list-2",
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorList.EdOptsList(editor = EditorBigDecimal.class,
-            myKey = "list-2",
-            minCount = 2, maxCount = 2, horizontal = true, labelText = "Interval:",
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorBigDecimal.EdOptsBigDecimal(dflt = 0)
+    /**
+     * Intervals
+     *
+     * The intervals that the value must fall in.
+     */
     private List<List<BigDecimal>> interval;
 
-    @ConfigurableField(editor = EditorInt.class, optional = true,
-            profilesGui = MODE_SIMPLE_EXPERT,
-            label = "Significant Figures", description = "The number of significant figures.")
-    @EditorInt.EdOptsInt(min = 0, max = 100, step = 1, dflt = 0)
+    /**
+     * Significant Figures
+     *
+     * The number of significant figures.
+     */
     private Integer significantFigures;
 
     public List<BigDecimal> getValue() {

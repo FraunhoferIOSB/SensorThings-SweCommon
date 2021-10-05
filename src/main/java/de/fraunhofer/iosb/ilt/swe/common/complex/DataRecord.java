@@ -16,14 +16,7 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.complex;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableClass;
-import de.fraunhofer.iosb.ilt.configurable.annotations.ConfigurableField;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorClass;
-import de.fraunhofer.iosb.ilt.configurable.editor.EditorList;
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
-import static de.fraunhofer.iosb.ilt.swe.common.AbstractSWE.MODE_SIMPLE_EXPERT;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,23 +25,14 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  */
-@ConfigurableClass(jsonName = "DataRecord", profilesEdit = MODE_SIMPLE_EXPERT)
 public class DataRecord extends AbstractDataComponent {
 
-    @ConfigurableField(editor = EditorList.class,
-            profilesGui = MODE_SIMPLE_EXPERT_VALUE,
-            jsonField = "field",
-            label = "Fields",
-            description = "The fields in this DataRecord.")
-    @EditorList.EdOptsList(editor = EditorClass.class,
-            profilesEdit = MODE_SIMPLE_EXPERT)
-    @EditorClass.EdOptsClass(clazz = Field.class)
-    private List<Field> fields;
+    private List<AbstractDataComponent> field;
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.fields);
+        hash = 29 * hash + Objects.hashCode(this.field);
         hash = 29 * hash + super.hashCode();
         return hash;
     }
@@ -65,61 +49,50 @@ public class DataRecord extends AbstractDataComponent {
             return false;
         }
         final DataRecord other = (DataRecord) obj;
-        if (!Objects.equals(this.fields, other.fields)) {
+        if (!Objects.equals(this.field, other.field)) {
             return false;
         }
         return super.equals(obj);
     }
 
-    public List<Field> getFields() {
-        if (fields == null) {
-            fields = new ArrayList<>();
-        }
-        return fields;
+    @Deprecated
+    public List<AbstractDataComponent> getFields() {
+        return getField();
     }
 
-    public java.util.Optional<Field> getFieldByName(String name) {
+    public List<AbstractDataComponent> getField() {
+        if (field == null) {
+            field = new ArrayList<>();
+        }
+        return field;
+    }
+
+    public void setField(List<AbstractDataComponent> field) {
+        this.field = field;
+    }
+
+    public java.util.Optional<AbstractDataComponent> getFieldByName(String name) {
         return getFields().stream().filter(f -> f.getName().equals(name)).findFirst();
     }
 
-    public void addDataComponent(String name, AbstractDataComponent field){
-        if(getFieldByName(name).isPresent()) {
+    public void addDataComponent(AbstractDataComponent field) {
+        String name = field.getName();
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Field must have a non-empty name");
+        }
+        if (getFieldByName(name).isPresent()) {
             throw new IllegalArgumentException("Field with name " + name + " is already present");
         }
-        getFields().add(new Field(name, field));
-    }
-
-    @Override
-    public JsonElement getValueJson() {
-        JsonObject object = new JsonObject();
-        for (Field item : fields) {
-            String itemName = item.getName();
-            JsonElement itemValue = item.getField().getValueJson();
-            object.add(itemName, itemValue);
-        }
-        return object;
-    }
-
-    @Override
-    public void setValueJson(JsonElement value) {
-        if (!value.isJsonObject()) {
-            return;
-        }
-        JsonObject asJsonObject = value.getAsJsonObject();
-        for (Field item : fields) {
-            String itemName = item.getName();
-            JsonElement itemValue = asJsonObject.get(itemName);
-            item.getField().setValueJson(itemValue);
-        }
+        getField().add(field);
     }
 
     @Override
     public boolean valueIsValid() {
-        if (fields == null) {
+        if (field == null) {
             return true;
         }
-        for (Field field : fields) {
-            if (!field.valueIsValid()) {
+        for (AbstractDataComponent f : field) {
+            if (!f.valueIsValid()) {
                 return false;
             }
         }

@@ -21,7 +21,6 @@
         <bintray.repo>Maven</bintray.repo>
         <bintray.package>SensorThings-SWE-Common</bintray.package>
 
-        <configurable.version>0.30</configurable.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-gpg-plugin>3.0.1</maven-gpg-plugin>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
@@ -173,11 +172,6 @@
     </profiles>
 
     <dependencies>
-        <dependency>
-            <groupId>de.fraunhofer.iosb.ilt</groupId>
-            <artifactId>Configurable</artifactId>
-            <version>${configurable.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
