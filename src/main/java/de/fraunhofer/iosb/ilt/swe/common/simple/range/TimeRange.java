@@ -115,6 +115,7 @@ public class TimeRange extends AbstractSimpleComponent {
         this.constraint = constraint;
     }
 
+    @Override
     public List<String> getValue() {
         return value;
     }

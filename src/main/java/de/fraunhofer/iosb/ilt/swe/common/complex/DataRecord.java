@@ -18,7 +18,10 @@ package de.fraunhofer.iosb.ilt.swe.common.complex;
 
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -72,7 +75,7 @@ public class DataRecord extends AbstractDataComponent {
     }
 
     public java.util.Optional<AbstractDataComponent> getFieldByName(String name) {
-        return getFields().stream().filter(f -> f.getName().equals(name)).findFirst();
+        return getField().stream().filter(f -> f.getName().equals(name)).findFirst();
     }
 
     public void addDataComponent(AbstractDataComponent field) {
@@ -99,4 +102,12 @@ public class DataRecord extends AbstractDataComponent {
         return true;
     }
 
+    @Override
+    public Map<String, Object> getValue() {
+        Map<String, Object> value = new LinkedHashMap<>();
+        for (AbstractDataComponent f : field) {
+            value.put(f.getName(), f.getValue());
+        }
+        return value;
+    }
 }

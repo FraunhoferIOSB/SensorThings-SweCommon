@@ -63,6 +63,7 @@ public class Quantity extends AbstractSimpleComponent {
         this.uom = uom;
     }
 
+    @Override
     public BigDecimal getValue() {
         return value;
     }

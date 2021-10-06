@@ -50,6 +50,7 @@ public class CountRange extends AbstractSimpleComponent {
      */
     private AllowedValues constraint;
 
+    @Override
     public List<Long> getValue() {
         return value;
     }

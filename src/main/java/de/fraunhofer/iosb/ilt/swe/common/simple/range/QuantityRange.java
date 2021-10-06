@@ -100,6 +100,7 @@ public class QuantityRange extends AbstractSimpleComponent {
         this.uom = uom;
     }
 
+    @Override
     public List<BigDecimal> getValue() {
         return value;
     }

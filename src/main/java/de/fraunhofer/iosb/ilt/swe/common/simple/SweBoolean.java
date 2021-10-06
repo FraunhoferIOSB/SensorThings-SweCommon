@@ -34,6 +34,7 @@ public class SweBoolean extends AbstractSimpleComponent {
      */
     private Boolean value;
 
+    @Override
     public Boolean getValue() {
         return value;
     }

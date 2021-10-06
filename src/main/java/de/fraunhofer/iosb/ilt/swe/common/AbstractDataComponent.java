@@ -116,6 +116,13 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
      */
     public abstract boolean valueIsValid();
 
+    /**
+     * Get the value of this DataComponent.
+     *
+     * @return The value of this DataComponent.
+     */
+    public abstract Object getValue();
+
     public void setDefinition(String definition) {
         this.definition = definition;
     }

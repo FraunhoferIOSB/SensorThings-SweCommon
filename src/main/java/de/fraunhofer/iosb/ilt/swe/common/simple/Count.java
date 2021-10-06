@@ -43,6 +43,7 @@ public class Count extends AbstractSimpleComponent {
      */
     private AllowedValues constraint;
 
+    @Override
     public Long getValue() {
         return value;
     }

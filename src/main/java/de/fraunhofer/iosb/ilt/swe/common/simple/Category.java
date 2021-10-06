@@ -57,6 +57,7 @@ public class Category extends AbstractSimpleComponent {
         return constraint;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

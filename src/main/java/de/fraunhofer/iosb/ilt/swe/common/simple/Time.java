@@ -109,6 +109,7 @@ public class Time extends AbstractSimpleComponent {
         this.constraint = constraint;
     }
 
+    @Override
     public String getValue() {
         return value;
     }

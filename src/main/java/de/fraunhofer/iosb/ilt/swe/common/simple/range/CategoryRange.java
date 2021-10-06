@@ -68,6 +68,7 @@ public class CategoryRange extends AbstractSimpleComponent {
         return constraint;
     }
 
+    @Override
     public List<String> getValue() {
         return value;
     }
