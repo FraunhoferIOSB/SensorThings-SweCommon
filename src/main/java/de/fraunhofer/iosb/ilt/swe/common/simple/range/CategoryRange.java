@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class CategoryRange extends AbstractSimpleComponent {
+public class CategoryRange extends AbstractSimpleComponent<List<String>> {
 
     /**
      * The logger for this class.
@@ -56,21 +56,22 @@ public class CategoryRange extends AbstractSimpleComponent {
     //TODO
     private Map<String, String> codeSpace;
 
-    public void setValue(List<String> value) {
-        this.value = value;
+    public AllowedTokens getConstraint() {
+        return constraint;
     }
 
     public void setConstraint(AllowedTokens constraint) {
         this.constraint = constraint;
     }
 
-    public AllowedTokens getConstraint() {
-        return constraint;
-    }
-
     @Override
     public List<String> getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue(List<String> value) {
+        this.value = value;
     }
 
     @Override

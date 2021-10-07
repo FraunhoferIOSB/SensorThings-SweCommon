@@ -25,8 +25,9 @@ import java.util.Objects;
 /**
  *
  * @author Hylke van der Schaaf
+ * @param <V> The type of the Value field.
  */
-public abstract class AbstractSimpleComponent extends AbstractDataComponent {
+public abstract class AbstractSimpleComponent<V> extends AbstractDataComponent<V> {
 
     /**
      * Axis ID

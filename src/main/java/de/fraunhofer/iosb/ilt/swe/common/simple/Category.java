@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Category extends AbstractSimpleComponent {
+public class Category extends AbstractSimpleComponent<String> {
 
     /**
      * Value
@@ -45,21 +45,22 @@ public class Category extends AbstractSimpleComponent {
     //TODO
     private Map<String, String> codeSpace;
 
-    public void setConstraint(AllowedTokens constraint) {
-        this.constraint = constraint;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public AllowedTokens getConstraint() {
         return constraint;
+    }
+
+    public void setConstraint(AllowedTokens constraint) {
+        this.constraint = constraint;
     }
 
     @Override
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

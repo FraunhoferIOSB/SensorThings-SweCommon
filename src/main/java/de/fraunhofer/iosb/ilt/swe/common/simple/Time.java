@@ -25,7 +25,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Time extends AbstractSimpleComponent {
+public class Time extends AbstractSimpleComponent<String> {
 
     /**
      * Reference Time
@@ -114,6 +114,7 @@ public class Time extends AbstractSimpleComponent {
         return value;
     }
 
+    @Override
     public void setValue(String value) {
         this.value = value;
     }

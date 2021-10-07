@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hylke van der Schaaf
  */
-public class CountRange extends AbstractSimpleComponent {
+public class CountRange extends AbstractSimpleComponent<List<Long>> {
 
     /**
      * The logger for this class.
@@ -55,6 +55,7 @@ public class CountRange extends AbstractSimpleComponent {
         return value;
     }
 
+    @Override
     public void setValue(List<Long> value) {
         if (value.size() != 2) {
             throw new IllegalArgumentException("CountRange must have a value with exactly 2 values.");

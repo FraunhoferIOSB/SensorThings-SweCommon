@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class QuantityRange extends AbstractSimpleComponent {
+public class QuantityRange extends AbstractSimpleComponent<List<BigDecimal>> {
 
     /**
      * The logger for this class.
@@ -105,6 +105,7 @@ public class QuantityRange extends AbstractSimpleComponent {
         return value;
     }
 
+    @Override
     public void setValue(List<BigDecimal> value) {
         this.value = value;
     }

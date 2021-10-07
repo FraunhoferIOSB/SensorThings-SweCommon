@@ -25,7 +25,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Text extends AbstractSimpleComponent {
+public class Text extends AbstractSimpleComponent<String> {
 
     /**
      * Value
@@ -40,10 +40,6 @@ public class Text extends AbstractSimpleComponent {
      * The constraints put on the value of this component.
      */
     private AllowedTokens constraint;
-
-    public void setValue(String value) {
-        this.value = value;
-    }
 
     @Override
     public int hashCode() {
@@ -75,6 +71,10 @@ public class Text extends AbstractSimpleComponent {
         return super.equals(obj);
     }
 
+    public AllowedTokens getConstraint() {
+        return constraint;
+    }
+
     public void setConstraint(AllowedTokens constraint) {
         this.constraint = constraint;
     }
@@ -84,8 +84,9 @@ public class Text extends AbstractSimpleComponent {
         return value;
     }
 
-    public AllowedTokens getConstraint() {
-        return constraint;
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

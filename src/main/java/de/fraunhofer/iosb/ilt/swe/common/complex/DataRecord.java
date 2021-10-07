@@ -28,7 +28,7 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  */
-public class DataRecord extends AbstractDataComponent {
+public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
 
     private List<AbstractDataComponent> field;
 
@@ -90,6 +90,28 @@ public class DataRecord extends AbstractDataComponent {
     }
 
     @Override
+    public Map<String, Object> getValue() {
+        Map<String, Object> value = new LinkedHashMap<>();
+        for (AbstractDataComponent f : field) {
+            value.put(f.getName(), f.getValue());
+        }
+        return value;
+    }
+
+    @Override
+    public void setValue(Map<String, Object> value) {
+        if (field == null) {
+            return;
+        }
+        for (AbstractDataComponent f : field) {
+            Object fieldValue = value.get(f.getName());
+            if (fieldValue != null) {
+                f.setValue(fieldValue);
+            }
+        }
+    }
+
+    @Override
     public boolean valueIsValid() {
         if (field == null) {
             return true;
@@ -102,12 +124,4 @@ public class DataRecord extends AbstractDataComponent {
         return true;
     }
 
-    @Override
-    public Map<String, Object> getValue() {
-        Map<String, Object> value = new LinkedHashMap<>();
-        for (AbstractDataComponent f : field) {
-            value.put(f.getName(), f.getValue());
-        }
-        return value;
-    }
 }

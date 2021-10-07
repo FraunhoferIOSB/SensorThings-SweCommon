@@ -23,8 +23,9 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
+ * @param <V> The type of the Value field.
  */
-public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
+public abstract class AbstractDataComponent<V> extends AbstractSWEIdentifiable {
 
     /**
      * name
@@ -121,7 +122,9 @@ public abstract class AbstractDataComponent extends AbstractSWEIdentifiable {
      *
      * @return The value of this DataComponent.
      */
-    public abstract Object getValue();
+    public abstract V getValue();
+
+    public abstract void setValue(V value);
 
     public void setDefinition(String definition) {
         this.definition = definition;

@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class TimeRange extends AbstractSimpleComponent {
+public class TimeRange extends AbstractSimpleComponent<List<String>> {
 
     /**
      * The logger for this class.
@@ -120,6 +120,7 @@ public class TimeRange extends AbstractSimpleComponent {
         return value;
     }
 
+    @Override
     public void setValue(List<String> value) {
         this.value = value;
     }

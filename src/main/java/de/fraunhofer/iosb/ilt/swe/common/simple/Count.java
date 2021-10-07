@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Count extends AbstractSimpleComponent {
+public class Count extends AbstractSimpleComponent<Long> {
 
     /**
      * Value
@@ -43,13 +43,22 @@ public class Count extends AbstractSimpleComponent {
      */
     private AllowedValues constraint;
 
+    public AllowedValues getConstraint() {
+        return constraint;
+    }
+
+    public void setConstraint(AllowedValues constraint) {
+        this.constraint = constraint;
+    }
+
     @Override
     public Long getValue() {
         return value;
     }
 
-    public AllowedValues getConstraint() {
-        return constraint;
+    @Override
+    public void setValue(Long value) {
+        this.value = value;
     }
 
     @Override
@@ -61,14 +70,6 @@ public class Count extends AbstractSimpleComponent {
             return true;
         }
         return constraint.isValid(new BigDecimal(value));
-    }
-
-    public void setValue(Long value) {
-        this.value = value;
-    }
-
-    public void setConstraint(AllowedValues constraint) {
-        this.constraint = constraint;
     }
 
     @Override
