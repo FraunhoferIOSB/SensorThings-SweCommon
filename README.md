@@ -5,7 +5,7 @@ A set of classes for dealing with the SWE-Common encoded parts of the SensorThin
 ## Download
 
 A pre-compiled jar can be found in Maven Central:
-[SensorThings-SWE-Common-0.7.jar](https://repo1.maven.org/maven2/de/fraunhofer/iosb/ilt/SensorThings-SWE-Common/0.6/SensorThings-SWE-Common-0.7.jar)
+[SensorThings-SWE-Common-0.9.jar](https://repo1.maven.org/maven2/de/fraunhofer/iosb/ilt/SensorThings-SWE-Common/0.6/SensorThings-SWE-Common-0.9.jar)
 Download and double-click.
 
 ## Build
@@ -20,7 +20,7 @@ Add the dependency:
 <dependency>
     <groupId>de.fraunhofer.iosb.ilt</groupId>
     <artifactId>SensorThings-SWE-Common</artifactId>
-    <version>0.7</version>
+    <version>0.9</version>
 </dependency>
 
 ```
@@ -29,5 +29,5 @@ Add the dependency:
 
 Add the dependency:
 ```gradle
-compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.7'
+compile 'de.fraunhofer.iosb.ilt:SensorThings-SWE-Common:0.9'
 ```
