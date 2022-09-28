@@ -28,7 +28,7 @@
         <maven-nexus-staging-plugin>1.6.13</maven-nexus-staging-plugin>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <slf4j-api.version>2.0.2</slf4j-api.version>
+        <slf4j-api.version>2.0.3</slf4j-api.version>
     </properties>
 
     <licenses>
