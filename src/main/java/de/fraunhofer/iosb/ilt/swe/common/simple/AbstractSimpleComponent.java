@@ -25,9 +25,10 @@ import java.util.Objects;
 /**
  *
  * @author Hylke van der Schaaf
+ * @param <T> The type of the extending class.
  * @param <V> The type of the Value field.
  */
-public abstract class AbstractSimpleComponent<V> extends AbstractDataComponent<V> {
+public abstract class AbstractSimpleComponent<T extends AbstractSimpleComponent<T, V>, V> extends AbstractDataComponent<T, V> {
 
     /**
      * Axis ID
@@ -59,24 +60,27 @@ public abstract class AbstractSimpleComponent<V> extends AbstractDataComponent<V
         return referenceFrame;
     }
 
-    public void setReferenceFrame(String referenceFrame) {
+    public T setReferenceFrame(String referenceFrame) {
         this.referenceFrame = referenceFrame;
+        return self();
     }
 
     public String getAxisID() {
         return axisID;
     }
 
-    public void setAxisID(String axisID) {
+    public T setAxisID(String axisID) {
         this.axisID = axisID;
+        return self();
     }
 
     public List<NillValue> getNilValues() {
         return nilValues;
     }
 
-    public void setNilValues(List<NillValue> nilValues) {
+    public T setNilValues(List<NillValue> nilValues) {
         this.nilValues = nilValues;
+        return self();
     }
 
     @Override

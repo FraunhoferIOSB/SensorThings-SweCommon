@@ -19,7 +19,6 @@ package de.fraunhofer.iosb.ilt.swe.common.simple.range;
 
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedTokens;
 import de.fraunhofer.iosb.ilt.swe.common.simple.AbstractSimpleComponent;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class CategoryRange extends AbstractSimpleComponent<List<String>> {
+public class CategoryRange extends AbstractSimpleComponent<CategoryRange, List<String>> {
 
     /**
      * The logger for this class.
@@ -60,8 +59,9 @@ public class CategoryRange extends AbstractSimpleComponent<List<String>> {
         return constraint;
     }
 
-    public void setConstraint(AllowedTokens constraint) {
+    public CategoryRange setConstraint(AllowedTokens constraint) {
         this.constraint = constraint;
+        return this;
     }
 
     @Override
@@ -70,8 +70,9 @@ public class CategoryRange extends AbstractSimpleComponent<List<String>> {
     }
 
     @Override
-    public void setValue(List<String> value) {
+    public CategoryRange setValue(List<String> value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -123,6 +124,11 @@ public class CategoryRange extends AbstractSimpleComponent<List<String>> {
             return false;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    protected CategoryRange self() {
+        return this;
     }
 
 }

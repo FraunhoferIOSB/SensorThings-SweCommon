@@ -23,9 +23,10 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
+ * @param <T> The type of the extending class.
  * @param <V> The type of the Value field.
  */
-public abstract class AbstractDataComponent<V> extends AbstractSWEIdentifiable {
+public abstract class AbstractDataComponent<T extends AbstractDataComponent<T, V>, V> extends AbstractSWEIdentifiable<T> {
 
     /**
      * name
@@ -98,8 +99,9 @@ public abstract class AbstractDataComponent<V> extends AbstractSWEIdentifiable {
         return name;
     }
 
-    public void setName(String name) {
+    public T setName(String name) {
         this.name = name;
+        return self();
     }
 
     public Boolean isOptional() {
@@ -124,17 +126,21 @@ public abstract class AbstractDataComponent<V> extends AbstractSWEIdentifiable {
      */
     public abstract V getValue();
 
-    public abstract void setValue(V value);
+    public abstract T setValue(V value);
 
-    public void setDefinition(String definition) {
+    public T setDefinition(String definition) {
         this.definition = definition;
+        return self();
     }
 
-    public void setOptional(boolean optional) {
+    public T setOptional(boolean optional) {
         this.optional = optional;
+        return self();
     }
 
-    public void setUpdatable(boolean updatable) {
+    public T setUpdatable(boolean updatable) {
         this.updatable = updatable;
+        return self();
     }
+
 }

@@ -17,7 +17,6 @@
  */
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +27,7 @@ import java.util.regex.Pattern;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class AllowedTokens extends AbstractConstraint {
+public class AllowedTokens extends AbstractConstraint<AllowedTokens> {
 
     /**
      * Value
@@ -45,7 +44,6 @@ public class AllowedTokens extends AbstractConstraint {
     private String pattern;
 
     public AllowedTokens() {
-        this.value = new ArrayList<>();
     }
 
     public AllowedTokens(String... tokens) {
@@ -111,12 +109,19 @@ public class AllowedTokens extends AbstractConstraint {
         return false;
     }
 
-    public void setValue(List<String> value) {
+    public AllowedTokens setValue(List<String> value) {
         this.value = value;
+        return this;
     }
 
-    public void setPattern(String pattern) {
+    public AllowedTokens setPattern(String pattern) {
         this.pattern = pattern;
+        return this;
+    }
+
+    @Override
+    protected AllowedTokens self() {
+        return this;
     }
 
 }

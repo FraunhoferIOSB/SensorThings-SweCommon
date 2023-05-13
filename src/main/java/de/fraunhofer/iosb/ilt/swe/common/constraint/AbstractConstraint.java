@@ -18,10 +18,12 @@
 package de.fraunhofer.iosb.ilt.swe.common.constraint;
 
 /**
+ * The abstract class for constraints.
  *
  * @author scf
+ * @param <T> The type of the extending class.
  */
-public abstract class AbstractConstraint {
+public abstract class AbstractConstraint<T extends AbstractConstraint<T>> {
 
     /**
      * the type of the constraint.
@@ -32,8 +34,11 @@ public abstract class AbstractConstraint {
         return type;
     }
 
-    public void setType(String type) {
+    public T setType(String type) {
         this.type = type;
+        return self();
     }
+
+    protected abstract T self();
 
 }

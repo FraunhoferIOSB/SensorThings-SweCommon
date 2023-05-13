@@ -18,7 +18,6 @@ package de.fraunhofer.iosb.ilt.swe.common.complex;
 
 import de.fraunhofer.iosb.ilt.swe.common.AbstractDataComponent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  */
-public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
+public class DataRecord extends AbstractDataComponent<DataRecord, Map<String, Object>> {
 
     private List<AbstractDataComponent> field;
 
@@ -58,11 +57,6 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
         return super.equals(obj);
     }
 
-    @Deprecated
-    public List<AbstractDataComponent> getFields() {
-        return getField();
-    }
-
     public List<AbstractDataComponent> getField() {
         if (field == null) {
             field = new ArrayList<>();
@@ -70,15 +64,23 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
         return field;
     }
 
-    public void setField(List<AbstractDataComponent> field) {
+    public DataRecord setField(List<AbstractDataComponent> field) {
         this.field = field;
+        return this;
     }
 
     public java.util.Optional<AbstractDataComponent> getFieldByName(String name) {
         return getField().stream().filter(f -> f.getName().equals(name)).findFirst();
     }
 
-    public void addDataComponent(AbstractDataComponent field) {
+    public DataRecord addDataComponent(String name, AbstractDataComponent field) {
+        if (!name.equals(field.getName())) {
+            field.setName(name);
+        }
+        return addDataComponent(field);
+    }
+
+    public DataRecord addDataComponent(AbstractDataComponent field) {
         String name = field.getName();
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Field must have a non-empty name");
@@ -87,6 +89,7 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
             throw new IllegalArgumentException("Field with name " + name + " is already present");
         }
         getField().add(field);
+        return this;
     }
 
     @Override
@@ -99,9 +102,9 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
     }
 
     @Override
-    public void setValue(Map<String, Object> value) {
+    public DataRecord setValue(Map<String, Object> value) {
         if (field == null) {
-            return;
+            return this;
         }
         for (AbstractDataComponent f : field) {
             Object fieldValue = value.get(f.getName());
@@ -109,6 +112,7 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
                 f.setValue(fieldValue);
             }
         }
+        return this;
     }
 
     @Override
@@ -122,6 +126,11 @@ public class DataRecord extends AbstractDataComponent<Map<String, Object>> {
             }
         }
         return true;
+    }
+
+    @Override
+    protected DataRecord self() {
+        return this;
     }
 
 }

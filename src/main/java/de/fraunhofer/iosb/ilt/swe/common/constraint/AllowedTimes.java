@@ -25,7 +25,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class AllowedTimes extends AbstractConstraint {
+public class AllowedTimes extends AbstractConstraint<AllowedTimes> {
 
     /**
      * Value
@@ -97,16 +97,24 @@ public class AllowedTimes extends AbstractConstraint {
         return true;
     }
 
-    public void setValue(List<String> value) {
+    public AllowedTimes setValue(List<String> value) {
         this.value = value;
+        return this;
     }
 
-    public void setInterval(List<List<String>> interval) {
+    public AllowedTimes setInterval(List<List<String>> interval) {
         this.interval = interval;
+        return this;
     }
 
-    public void setSignificantFigures(Integer significantFigures) {
+    public AllowedTimes setSignificantFigures(Integer significantFigures) {
         this.significantFigures = significantFigures;
+        return this;
+    }
+
+    @Override
+    protected AllowedTimes self() {
+        return this;
     }
 
 }

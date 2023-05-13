@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class QuantityRange extends AbstractSimpleComponent<List<BigDecimal>> {
+public class QuantityRange extends AbstractSimpleComponent<QuantityRange, List<BigDecimal>> {
 
     /**
      * The logger for this class.
@@ -96,8 +96,9 @@ public class QuantityRange extends AbstractSimpleComponent<List<BigDecimal>> {
         return uom;
     }
 
-    public void setUom(String uom) {
+    public QuantityRange setUom(String uom) {
         this.uom = uom;
+        return this;
     }
 
     @Override
@@ -106,16 +107,18 @@ public class QuantityRange extends AbstractSimpleComponent<List<BigDecimal>> {
     }
 
     @Override
-    public void setValue(List<BigDecimal> value) {
+    public QuantityRange setValue(List<BigDecimal> value) {
         this.value = value;
+        return this;
     }
 
     public AllowedValues getConstraint() {
         return constraint;
     }
 
-    public void setConstraint(AllowedValues constraint) {
+    public QuantityRange setConstraint(AllowedValues constraint) {
         this.constraint = constraint;
+        return this;
     }
 
     @Override
@@ -133,6 +136,11 @@ public class QuantityRange extends AbstractSimpleComponent<List<BigDecimal>> {
             }
         }
         return true;
+    }
+
+    @Override
+    protected QuantityRange self() {
+        return this;
     }
 
 }

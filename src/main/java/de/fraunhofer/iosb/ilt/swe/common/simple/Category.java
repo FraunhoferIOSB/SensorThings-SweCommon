@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Category extends AbstractSimpleComponent<String> {
+public class Category extends AbstractSimpleComponent<Category, String> {
 
     /**
      * Value
@@ -49,8 +49,9 @@ public class Category extends AbstractSimpleComponent<String> {
         return constraint;
     }
 
-    public void setConstraint(AllowedTokens constraint) {
+    public Category setConstraint(AllowedTokens constraint) {
         this.constraint = constraint;
+        return this;
     }
 
     @Override
@@ -59,8 +60,9 @@ public class Category extends AbstractSimpleComponent<String> {
     }
 
     @Override
-    public void setValue(String value) {
+    public Category setValue(String value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -107,4 +109,10 @@ public class Category extends AbstractSimpleComponent<String> {
         }
         return super.equals(obj);
     }
+
+    @Override
+    protected Category self() {
+        return this;
+    }
+
 }

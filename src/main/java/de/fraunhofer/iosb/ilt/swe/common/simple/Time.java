@@ -25,7 +25,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Time extends AbstractSimpleComponent<String> {
+public class Time extends AbstractSimpleComponent<Time, String> {
 
     /**
      * Reference Time
@@ -81,32 +81,36 @@ public class Time extends AbstractSimpleComponent<String> {
         return referenceTime;
     }
 
-    public void setReferenceTime(String referenceTime) {
+    public Time setReferenceTime(String referenceTime) {
         this.referenceTime = referenceTime;
+        return this;
     }
 
     public String getLocalFrame() {
         return localFrame;
     }
 
-    public void setLocalFrame(String localFrame) {
+    public Time setLocalFrame(String localFrame) {
         this.localFrame = localFrame;
+        return this;
     }
 
     public String getUom() {
         return uom;
     }
 
-    public void setUom(String uom) {
+    public Time setUom(String uom) {
         this.uom = uom;
+        return this;
     }
 
     public AllowedTimes getConstraint() {
         return constraint;
     }
 
-    public void setConstraint(AllowedTimes constraint) {
+    public Time setConstraint(AllowedTimes constraint) {
         this.constraint = constraint;
+        return this;
     }
 
     @Override
@@ -115,8 +119,9 @@ public class Time extends AbstractSimpleComponent<String> {
     }
 
     @Override
-    public void setValue(String value) {
+    public Time setValue(String value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -170,6 +175,11 @@ public class Time extends AbstractSimpleComponent<String> {
             return false;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    protected Time self() {
+        return this;
     }
 
 }

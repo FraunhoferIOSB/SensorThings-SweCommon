@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class TimeRange extends AbstractSimpleComponent<List<String>> {
+public class TimeRange extends AbstractSimpleComponent<TimeRange, List<String>> {
 
     /**
      * The logger for this class.
@@ -87,32 +87,36 @@ public class TimeRange extends AbstractSimpleComponent<List<String>> {
         return referenceTime;
     }
 
-    public void setReferenceTime(String referenceTime) {
+    public TimeRange setReferenceTime(String referenceTime) {
         this.referenceTime = referenceTime;
+        return this;
     }
 
     public String getLocalFrame() {
         return localFrame;
     }
 
-    public void setLocalFrame(String localFrame) {
+    public TimeRange setLocalFrame(String localFrame) {
         this.localFrame = localFrame;
+        return this;
     }
 
     public String getUom() {
         return uom;
     }
 
-    public void setUom(String uom) {
+    public TimeRange setUom(String uom) {
         this.uom = uom;
+        return this;
     }
 
     public AllowedTimes getConstraint() {
         return constraint;
     }
 
-    public void setConstraint(AllowedTimes constraint) {
+    public TimeRange setConstraint(AllowedTimes constraint) {
         this.constraint = constraint;
+        return this;
     }
 
     @Override
@@ -121,8 +125,9 @@ public class TimeRange extends AbstractSimpleComponent<List<String>> {
     }
 
     @Override
-    public void setValue(List<String> value) {
+    public TimeRange setValue(List<String> value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -183,4 +188,10 @@ public class TimeRange extends AbstractSimpleComponent<List<String>> {
         }
         return super.equals(obj);
     }
+
+    @Override
+    protected TimeRange self() {
+        return this;
+    }
+
 }

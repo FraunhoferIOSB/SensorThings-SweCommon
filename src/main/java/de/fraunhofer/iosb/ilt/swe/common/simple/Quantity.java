@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Quantity extends AbstractSimpleComponent<BigDecimal> {
+public class Quantity extends AbstractSimpleComponent<Quantity, BigDecimal> {
 
     /**
      * Value
@@ -51,12 +51,14 @@ public class Quantity extends AbstractSimpleComponent<BigDecimal> {
      */
     private String uom;
 
-    public void setConstraint(AllowedValues constraint) {
+    public Quantity setConstraint(AllowedValues constraint) {
         this.constraint = constraint;
+        return this;
     }
 
-    public void setUom(String uom) {
+    public Quantity setUom(String uom) {
         this.uom = uom;
+        return this;
     }
 
     @Override
@@ -65,8 +67,9 @@ public class Quantity extends AbstractSimpleComponent<BigDecimal> {
     }
 
     @Override
-    public void setValue(BigDecimal value) {
+    public Quantity setValue(BigDecimal value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -120,6 +123,11 @@ public class Quantity extends AbstractSimpleComponent<BigDecimal> {
             return false;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    protected Quantity self() {
+        return this;
     }
 
 }

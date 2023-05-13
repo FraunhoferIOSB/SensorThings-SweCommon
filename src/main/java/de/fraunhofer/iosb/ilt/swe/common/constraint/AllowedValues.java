@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class AllowedValues extends AbstractConstraint {
+public class AllowedValues extends AbstractConstraint<AllowedValues> {
 
     /**
      * Values
@@ -85,16 +85,19 @@ public class AllowedValues extends AbstractConstraint {
         return false;
     }
 
-    public void setValue(List<BigDecimal> value) {
+    public AllowedValues setValue(List<BigDecimal> value) {
         this.value = value;
+        return this;
     }
 
-    public void setInterval(List<List<BigDecimal>> interval) {
+    public AllowedValues setInterval(List<List<BigDecimal>> interval) {
         this.interval = interval;
+        return this;
     }
 
-    public void setSignificantFigures(Integer significantFigures) {
+    public AllowedValues setSignificantFigures(Integer significantFigures) {
         this.significantFigures = significantFigures;
+        return this;
     }
 
     @Override
@@ -126,4 +129,10 @@ public class AllowedValues extends AbstractConstraint {
         }
         return Objects.equals(this.significantFigures, other.significantFigures);
     }
+
+    @Override
+    protected AllowedValues self() {
+        return this;
+    }
+
 }

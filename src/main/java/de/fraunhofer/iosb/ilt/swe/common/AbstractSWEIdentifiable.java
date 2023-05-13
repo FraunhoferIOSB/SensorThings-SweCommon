@@ -23,8 +23,9 @@ import java.util.Objects;
  *
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
+ * @param <T> The type of the extending class.
  */
-public abstract class AbstractSWEIdentifiable extends AbstractSWE {
+public abstract class AbstractSWEIdentifiable<T extends AbstractSWEIdentifiable<T>> extends AbstractSWE {
 
     /**
      * Identifier
@@ -56,32 +57,36 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
         return description;
     }
 
-    public void setDescription(String description) {
+    public T setDescription(String description) {
         this.description = description;
+        return self();
     }
 
     public String getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(String identifier) {
+    public T setIdentifier(String identifier) {
         this.identifier = identifier;
+        return self();
     }
 
     public String getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
+    public T setLabel(String label) {
         this.label = label;
+        return self();
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public T setType(String type) {
         this.type = type;
+        return self();
     }
 
     @Override
@@ -113,5 +118,7 @@ public abstract class AbstractSWEIdentifiable extends AbstractSWE {
         }
         return Objects.equals(this.description, other.description);
     }
+
+    protected abstract T self();
 
 }

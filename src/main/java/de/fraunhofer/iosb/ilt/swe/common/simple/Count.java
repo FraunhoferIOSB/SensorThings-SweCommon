@@ -26,7 +26,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class Count extends AbstractSimpleComponent<Long> {
+public class Count extends AbstractSimpleComponent<Count, Long> {
 
     /**
      * Value
@@ -57,8 +57,9 @@ public class Count extends AbstractSimpleComponent<Long> {
     }
 
     @Override
-    public void setValue(Long value) {
+    public Count setValue(Long value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -100,6 +101,11 @@ public class Count extends AbstractSimpleComponent<Long> {
             return false;
         }
         return super.equals(obj);
+    }
+
+    @Override
+    protected Count self() {
+        return this;
     }
 
 }

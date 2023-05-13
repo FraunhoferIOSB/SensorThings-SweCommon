@@ -30,16 +30,18 @@ public class NillValue {
         return reason;
     }
 
-    public void setReason(String reason) {
+    public NillValue setReason(String reason) {
         this.reason = reason;
+        return this;
     }
 
     public String getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public NillValue setValue(String value) {
         this.value = value;
+        return this;
     }
 
 }

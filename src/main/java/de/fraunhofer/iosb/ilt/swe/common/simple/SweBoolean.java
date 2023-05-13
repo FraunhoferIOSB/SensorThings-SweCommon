@@ -24,7 +24,7 @@ import java.util.Objects;
  * @author Hylke van der Schaaf
  * @author Michael Jacoby
  */
-public class SweBoolean extends AbstractSimpleComponent<Boolean> {
+public class SweBoolean extends AbstractSimpleComponent<SweBoolean, Boolean> {
 
     public static final String SWE_NAME = "Boolean";
     /**
@@ -40,8 +40,9 @@ public class SweBoolean extends AbstractSimpleComponent<Boolean> {
     }
 
     @Override
-    public void setValue(Boolean value) {
+    public SweBoolean setValue(Boolean value) {
         this.value = value;
+        return this;
     }
 
     @Override
@@ -74,4 +75,10 @@ public class SweBoolean extends AbstractSimpleComponent<Boolean> {
         }
         return super.equals(obj);
     }
+
+    @Override
+    protected SweBoolean self() {
+        return this;
+    }
+
 }
