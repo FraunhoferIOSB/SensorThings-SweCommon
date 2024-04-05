@@ -21,14 +21,14 @@
         <bintray.repo>Maven</bintray.repo>
         <bintray.package>SensorThings-SWE-Common</bintray.package>
 
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-gpg-plugin>3.1.0</maven-gpg-plugin>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-gpg-plugin>3.2.2</maven-gpg-plugin>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
         <maven-nexus-staging-plugin>1.6.13</maven-nexus-staging-plugin>
         <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
-        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <slf4j-api.version>2.0.12</slf4j-api.version>
     </properties>
 
     <licenses>
