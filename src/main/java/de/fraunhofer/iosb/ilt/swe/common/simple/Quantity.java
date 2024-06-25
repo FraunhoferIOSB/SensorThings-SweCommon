@@ -18,6 +18,7 @@
 package de.fraunhofer.iosb.ilt.swe.common.simple;
 
 import de.fraunhofer.iosb.ilt.swe.common.constraint.AllowedValues;
+import de.fraunhofer.iosb.ilt.swe.common.util.UnitOfMeasurement;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -49,14 +50,14 @@ public class Quantity extends AbstractSimpleComponent<Quantity, BigDecimal> {
      *
      * The units of the value of this Quantity.
      */
-    private String uom;
+    private UnitOfMeasurement uom;
 
     public Quantity setConstraint(AllowedValues constraint) {
         this.constraint = constraint;
         return this;
     }
 
-    public Quantity setUom(String uom) {
+    public Quantity setUom(UnitOfMeasurement uom) {
         this.uom = uom;
         return this;
     }
@@ -83,7 +84,7 @@ public class Quantity extends AbstractSimpleComponent<Quantity, BigDecimal> {
         return constraint.isValid(value);
     }
 
-    public String getUom() {
+    public UnitOfMeasurement getUom() {
         return uom;
     }
 

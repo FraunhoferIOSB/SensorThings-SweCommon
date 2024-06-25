@@ -17,29 +17,48 @@
 package de.fraunhofer.iosb.ilt.swe.common.util;
 
 /**
- * Definition of the placeholder for a "no value" value.
+ * Unit of Measurement.
  */
-public class NillValue {
+public class UnitOfMeasurement {
 
-    private String reason;
+    private String code;
+    private String href;
+    private String label;
+    private String symbol;
 
-    private String value;
-
-    public String getReason() {
-        return reason;
+    public String getCode() {
+        return code;
     }
 
-    public NillValue setReason(String reason) {
-        this.reason = reason;
+    public UnitOfMeasurement setCode(String code) {
+        this.code = code;
         return this;
     }
 
-    public String getValue() {
-        return value;
+    public String getHref() {
+        return href;
     }
 
-    public NillValue setValue(String value) {
-        this.value = value;
+    public UnitOfMeasurement setHref(String href) {
+        this.href = href;
+        return this;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public UnitOfMeasurement setLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public UnitOfMeasurement setSymbol(String symbol) {
+        this.symbol = symbol;
         return this;
     }
 
